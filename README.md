@@ -1,8 +1,10 @@
-需先安裝pygame模組，並執行main.py  
+需先安裝pygame模組，並執行main.py
+
 待改:  
   1. 超出邊界設定->可以考慮用LeftmostPos, RightmostPos  
   2. movement裡面太多畫面渲染，可以考慮拆分  
-  3. 所有Function檢查是否有冗贅<br>
+  3. 所有Function檢查是否有冗贅
+
 想做:  
   1. 雙人單機->分成兩個輸入控制和畫面就好，座標要改  
   2. 炸彈or道具<-(雙人的話要對對方做出甚麼攻擊)  
