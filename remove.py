@@ -25,7 +25,6 @@ class Remove():
                 
 
     def break_lines(self, line):
-        print("should berak")
         self.imgs_re = []
         self.score += int(self.movement.speed*10)
         self.get_score_sound.play()

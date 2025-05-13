@@ -29,7 +29,7 @@ clock = pygame.time.Clock()
 init = True
 
 def draw_text(text, size, x, y):
-    font_name = os.path.join("assests/fonts", "font.ttf")
+    font_name = os.path.join("Assests/fonts", "font.ttf")
     font = pygame.font.Font(font_name, size)
     #繪製文字(文字, 平滑值, 文字顏色, 背景顏色)
     TEXT = font.render(text, True, WHITE)
@@ -40,15 +40,15 @@ def draw_text(text, size, x, y):
 
 running = True
 
-img = pygame.image.load(os.path.join("assests/imgs", "level_1.jpg")).convert()
+img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
 gameover_img = pygame.transform.scale(img, (200, 200))
-icon = pygame.image.load(os.path.join("assests/imgs", "icon.png")).convert()
+icon = pygame.image.load(os.path.join("Assests/imgs", "icon.png")).convert()
 icon.set_colorkey(BLACK)
 pygame.display.set_icon(icon)
-pygame.mixer.music.load(os.path.join("assests/sounds", "happytime.mp3"))
+pygame.mixer.music.load(os.path.join("Assests/sounds", "happytime.mp3"))
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.05)
-get_score_sound = pygame.mixer.Sound(os.path.join("assests/sounds", "score.mp3"))
+get_score_sound = pygame.mixer.Sound(os.path.join("Assests/sounds", "score.mp3"))
 
 #創建類別物件
 blocks = Blocks()
