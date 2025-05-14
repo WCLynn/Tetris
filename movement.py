@@ -16,6 +16,7 @@ class Movement():
         self.lines.clear()  
         self.imgs.clear()
         self.speed = 0.5
+        
         for i in range((HEIGHT-100)//30):
             self.lines.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         for i in range(3):
@@ -35,7 +36,7 @@ class Movement():
         #定位原點
         self.O = [-2, 4]
         
-    def draw(self):
+    def draw(self, ScreenState):
         if (self.speed*self.speed_n) % 30 == 0:
             self.SPEEDy = (self.speed)*self.speed_n
             self.O[0] += 1
@@ -54,7 +55,9 @@ class Movement():
                 if self.judge_list.count(True) == 19:
                     self.stop_line = 18
             if (self.Y-50)//30 >= self.stop_line+self.blocks.mn_dic[self.n[j]][0] or self.Hard_Drop == True:
-                self.HardDrop()
+                temp = self.HardDrop()
+                if temp == 5:
+                    return 5
             else:
                 if self.Y >= 50:
                     fill_rect = pygame.Rect(self.X, self.Y, 30, 30)
@@ -63,6 +66,7 @@ class Movement():
                     outline_rect = pygame.Rect(self.X, (self.stop_line+self.blocks.mn_dic[self.n[j]][0])*30+50, 30, 30)
                     pygame.draw.rect(self.screen, self.WHITE, outline_rect, 3)
         self.speed_n += 1
+        return ScreenState
 
     def region_judge(self):
         self.judge_R = []
@@ -111,15 +115,17 @@ class Movement():
                 if j == 3:
                     self.draw_init()
                 if self.Y == 50:
-                    self.gameover = True
+                    # self.gameover = True
+                    return 5
             if self.Y < 50: 
-                self.gameover = True
+                # self.gameover = True
+                return 5
 
 
     #旋轉系統
-    def rotate(self):
+    def rotate(self, ScreenState):
         d = self.choose.index(self.n)+1
         if d-len(self.choose) >= 0:
             d = d-len(self.choose)
         self.n = self.choose[d]
-        self.draw()
+        self.draw(ScreenState)
