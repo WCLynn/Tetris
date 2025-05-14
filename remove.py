@@ -2,9 +2,9 @@ from movement import Movement
 import pygame
 import os
 class Remove():
-    def __init__(self):
-        
-        self.movement = Movement()
+    
+    movement = Movement()
+    
     def init(self, get_score_sound):
         self.score = 0
         self.score_old = 0

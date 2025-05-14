@@ -41,7 +41,7 @@ class Movement():
             self.O[0] += 1
         self.region_judge()
         for j in range(len(self.n)):
-            self.X, self.Y = self.blocks.all_InitPos[self.n[j]]
+            self.X, self.Y = self.blocks.P1_all_InitPos[self.n[j]]
             self.X += self.SPEEDx
             self.Y += self.SPEEDy
             self.judge_touch()
@@ -97,7 +97,7 @@ class Movement():
     
     def HardDrop(self):
         for j in range(len(self.n)):
-            self.X, self.Y = self.blocks.all_InitPos[self.n[j]]
+            self.X, self.Y = self.blocks.P1_all_InitPos[self.n[j]]
             self.X += self.SPEEDx
             self.Y = (self.stop_line+self.blocks.mn_dic[self.n[j]][0])*30+50
             self.image = pygame.Surface((30, 30))
@@ -107,7 +107,7 @@ class Movement():
                 self.rect.x = self.X
                 self.rect.y = self.Y
                 self.imgs.append([self.image, [self.X, self.Y]])
-                self.lines[(self.Y-50)//30][(self.X-100)//30] = 1
+                self.lines[(self.Y-50)//30][(self.X-600)//30] = 1 # self.X-100
                 if j == 3:
                     self.draw_init()
                 if self.Y == 50:
