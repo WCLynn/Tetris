@@ -96,7 +96,7 @@ while running:
             #移動系統
             
             if event.key == pygame.K_SPACE:
-                movement.Hard_Drop = True
+                movement.Go_Down = True
             if event.key == pygame.K_RIGHT:
                 movement.move("R") 
             if event.key == pygame.K_LEFT:
@@ -106,7 +106,7 @@ while running:
                 movement.rotate()
         elif event.type == pygame.TEXTINPUT:
             if event.text == ' ':
-                movement.Hard_Drop = True
+                movement.Go_Down = True
     
     #畫面顯示
     screen.fill(BLACK)

@@ -54,7 +54,7 @@ class Movement():
                 if self.judge_list.count(True) == 19:
                     self.stop_line = 18
             if (self.Y-50)//30 >= self.stop_line+self.blocks.mn_dic[self.n[j]][0] or self.Hard_Drop == True:
-                self.HardDrop()
+                self.go_down()
             else:
                 if self.Y >= 50:
                     fill_rect = pygame.Rect(self.X, self.Y, 30, 30)
@@ -95,7 +95,7 @@ class Movement():
             else: self.judge_list.append(False)
 
     
-    def HardDrop(self):
+    def go_down(self):
         for j in range(len(self.n)):
             self.X, self.Y = self.blocks.all_InitPos[self.n[j]]
             self.X += self.SPEEDx
