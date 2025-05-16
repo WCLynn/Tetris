@@ -1,10 +1,13 @@
 import pygame
 import os
+from database import DataBase
+
 class ScreenRender():
     
     BLACK = (0, 0, 0)
     LIGHT_GRAY = (128, 128, 128)
     WHITE = (255, 255, 255)
+    database = DataBase()
     
     def __init__(self, screen, ScreenState, WIDTH, BAR_WIDTH, BAR_HEIGHT):
         self.screen = screen
@@ -15,9 +18,8 @@ class ScreenRender():
     
     def Initial(self):
         self.screen.fill(self.WHITE)
-        self.ScreenState = self.Button(("Single",150, 120, 100, 50, 1), ("Double",150, 480, 100, 50, 2))
-        if self.ScreenState == 1 or 2:
-            return self.ScreenState
+        self.ScreenState = self.Button(("Single",150, 120, 150, 50, 1), ("Two Player",150, 480, 150, 50, 2), ("Leaderboard", 300, 190, 180, 50, 7))
+        return self.ScreenState
         
 
     def SingleMode_Start(self):
@@ -27,12 +29,10 @@ class ScreenRender():
         self.GameCell(player1_X,player_Y,30,2,20,10)
         pygame.display.update()
 
-        self.ScreenState = self.Button(("Start",300, 150, 100, 50, 3))
-        # pygame.display.update()
-        if self.ScreenState == 3:
-            return self.ScreenState
+        self.ScreenState = self.Button(("Start",300, 150, 100, 50, 3), ("Go Back", 1400, 600, 100, 50, 0))
+        return self.ScreenState
                     
-    def DoubleMode_Start(self):
+    def TwoPlayerMode_Start(self):
         #遊戲畫面顯示
         player_Y = 50
         player1_X = 100
@@ -41,10 +41,33 @@ class ScreenRender():
         self.GameCell(player2_X,player_Y,30,2,20,10)
         pygame.display.update()
 
-        self.ScreenState = self.Button(("Start",700, 150, 100, 50, 4))
-        if self.ScreenState == 4:
-            return self.ScreenState
-                  
+        self.ScreenState = self.Button(("Start",700, 150, 100, 50, 4), ("Go Back", 1400, 600, 100, 50, 0))
+        return self.ScreenState
+     
+    def SingleModeGameOver(self, x, y):
+        img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
+        gameover_img = pygame.transform.scale(img, (200, 200))
+        self.screen.blit(gameover_img, (x, y))
+        self.draw_text("GAME OVER", 72, x+100, y+260, self.WHITE)
+        self.ScreenState = self.Button(("Go Back", 1400, 600, 100, 50, 0))
+        return self.ScreenState
+        # pygame.display.update() 
+                 
+    def LeaderBoard(self, data):
+        
+        Cnt = 0
+        for item in data:
+            name = item["Name"]
+            score = item["Score"]
+            writeLine = f"Name: {name}  |   Score: {score}"
+            self.draw_text(writeLine, 72, 1000, 50+Cnt, self.BLACK)
+            Cnt += 50
+        pygame.display.update()
+        self.ScreenState = self.Button(("Go Back", 1400, 600, 100, 50, 0))    
+        return self.ScreenState
+            
+    
+    
     
     def GameCell(self, x, y, Cell_Edge, line_Width, Row_Cnt, Col_Cnt):
         rect = pygame.Rect(x, y, self.BAR_WIDTH, self.BAR_HEIGHT)
@@ -55,28 +78,18 @@ class ScreenRender():
             pygame.draw.line(self.screen, self.LIGHT_GRAY, (x, y+Cell_Edge+i*Cell_Edge), (Cell_Edge*Col_Cnt-line_Width+x, y+Cell_Edge+i*Cell_Edge), line_Width)
             
     
-    def draw_text(self, text, size, x, y):
+    def draw_text(self, text, size, x, y, color):
         font_name = os.path.join("Assests/fonts", "font.ttf")
         font = pygame.font.Font(font_name, size)
         #繪製文字(文字, 平滑值, 文字顏色, 背景顏色)
-        TEXT = font.render(text, True, self.WHITE)
+        TEXT = font.render(text, True, color)
         TEXT_rect = TEXT.get_rect()
         TEXT_rect.centerx = x
         TEXT_rect.centery = y
         self.screen.blit(TEXT, TEXT_rect)
         # pygame.display.update()
         
-    def GameOver(self, x, y):
-        img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
-        gameover_img = pygame.transform.scale(img, (200, 200))
-        self.screen.blit(gameover_img, (x, y))
-        self.draw_text("GAME OVER", 72, x+100, y+260)
-        self.ScreenState = self.Button(("Go Back", 1400, 600, 100, 50, 0))
-        if self.ScreenState == 0:
-            return self.ScreenState
-        else:
-            return 5
-        # pygame.display.update()
+
 
 
     # self.Buttons(

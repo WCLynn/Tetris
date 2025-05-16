@@ -5,6 +5,8 @@ from blocks import Blocks
 from movement import Movement
 from remove import Remove
 from screenRendering import ScreenRender
+from database import DataBase
+
 FPS = 125
 WIDTH = 1500
 HEIGHT = 700
@@ -48,13 +50,9 @@ pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.05)
 get_score_sound = pygame.mixer.Sound(os.path.join("Assests/sounds", "score.mp3"))
 
-#創建類別物件
-# blocks = Blocks()
-# movement = Movement()
-
 ScreenState = 0
 screenRender = ScreenRender(screen, ScreenState, WIDTH, BAR_WIDTH, BAR_HEIGHT)
-
+database = DataBase()
 
 while running:
 
@@ -62,6 +60,9 @@ while running:
     clock.tick(FPS)
     events = pygame.event.get()
     Quit(events)
+    
+    if ScreenState != 7:
+        database.TOP10_Data = []
     
     if ScreenState == 0: # 初始畫面 Choose Mode
         remove = Remove(get_score_sound, HEIGHT, screen)
@@ -74,8 +75,8 @@ while running:
         ScreenState = screenRender.SingleMode_Start()
         continue
         
-    if ScreenState == 2: # Double mode start
-        ScreenState = screenRender.DoubleMode_Start()
+    if ScreenState == 2: # Two Player mode start
+        ScreenState = screenRender.TwoPlayerMode_Start()
         continue
 
     if ScreenState == 3: # Single mode playing
@@ -117,21 +118,32 @@ while running:
         player1_X = 600
         screenRender.GameCell(player1_X,player_Y,30,2,20,10)
         
-        screenRender.draw_text(f"Score {remove.score}", 32, 500, 100)
-        screenRender.draw_text(f"Level {remove.level}", 32, 500, 150)
-        
+        screenRender.draw_text(f"Score {remove.score}", 32, 500, 100, WHITE)
+        screenRender.draw_text(f"Level {remove.level}", 32, 500, 150, WHITE)
         pygame.display.update()
         continue
 
     
-    if ScreenState == 4: # Double mode playing
+    if ScreenState == 4: # Two Player mode playing
         pass
         continue
     
     if ScreenState == 5: # Single Mode GameOver
-        ScreenState = screenRender.GameOver(1100, 200)
+        database.Update_Score("Temp", remove.score)
+        ScreenState = screenRender.SingleModeGameOver(1100, 200)
         pygame.display.update()
         continue
 
+    if ScreenState == 6: # Two Player Mode GameOver
+        pass
+        continue
+    
+    if ScreenState == 7: # Leaderboard
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        if not database.TOP10_Data:
+            database.TOP10_Data = database.Get_Top10()
+            print(database.TOP10_Data)
+        ScreenState = screenRender.LeaderBoard(database.TOP10_Data)
+        continue
     
 pygame.quit()
