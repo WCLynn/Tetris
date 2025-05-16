@@ -6,7 +6,7 @@ from movement import Movement
 from remove import Remove
 from screenRendering import ScreenRender
 from database import DataBase
-
+from player import Player
 FPS = 125
 WIDTH = 1500
 HEIGHT = 700
@@ -53,7 +53,8 @@ get_score_sound = pygame.mixer.Sound(os.path.join("Assests/sounds", "score.mp3")
 ScreenState = 0
 screenRender = ScreenRender(screen, ScreenState, WIDTH, BAR_WIDTH, BAR_HEIGHT)
 database = DataBase()
-
+state1 = 4
+state2 = 4
 while running:
 
     #1秒鐘內最多執行幾次
@@ -65,71 +66,73 @@ while running:
         database.TOP10_Data = []
     
     if ScreenState == 0: # 初始畫面 Choose Mode
-        remove = Remove(get_score_sound, HEIGHT, screen)
-        movement = remove.movement
-        blocks = movement.blocks
+        player1 = Player(screen, HEIGHT, get_score_sound, ScreenState, 1, 1,  WIDTH, BAR_WIDTH, BAR_HEIGHT)
+        player12 = Player(screen, HEIGHT, get_score_sound, ScreenState, 1, 2,  WIDTH, BAR_WIDTH, BAR_HEIGHT)
+        player22 = Player(screen, HEIGHT, get_score_sound, ScreenState, 2, 2,  WIDTH, BAR_WIDTH, BAR_HEIGHT)
         ScreenState = screenRender.Initial()
+        print("ScreenState: ", ScreenState)
         continue
         
     if ScreenState == 1: # Single mode start
         ScreenState = screenRender.SingleMode_Start()
+        print("ScreenState: ", ScreenState)
         continue
         
     if ScreenState == 2: # Two Player mode start
         ScreenState = screenRender.TwoPlayerMode_Start()
+        print("ScreenState: ", ScreenState)
         continue
 
     if ScreenState == 3: # Single mode playing
-        
-        for event in events:
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.KEYDOWN and movement.gameover == False:
-                #移動系統
-                if event.key == pygame.K_SPACE:
-                    movement.Hard_Drop = True
-                if event.key == pygame.K_RIGHT:
-                    movement.move("R") 
-                if event.key == pygame.K_LEFT:
-                    movement.move("L")
-                #旋轉系統
-                if event.key == pygame.K_UP:
-                    movement.rotate(ScreenState)
-            elif event.type == pygame.TEXTINPUT:
-                if event.text == ' ':
-                    movement.Hard_Drop = True
-        
-        #畫面顯示
         screen.fill(BLACK)
-        
-        #移動系統
-        ScreenState = movement.draw(ScreenState)
-        print("ScreenState: ", ScreenState)
-        for i, j in movement.imgs:
-            screen.blit(i, j)
-        #消行系統
-        remove.break_judge()
-        if remove.score - remove.score_old >= 80:
-            remove.score_old = remove.score
-            movement.speed += 0.25
-            remove.level += 1   
-            
-        player_Y = 50
-        player1_X = 600
-        screenRender.GameCell(player1_X,player_Y,30,2,20,10)
-        
-        screenRender.draw_text(f"Score {remove.score}", 32, 500, 100, WHITE)
-        screenRender.draw_text(f"Level {remove.level}", 32, 500, 150, WHITE)
+        player1.ScreenState = ScreenState
+        player1.Event(events)
+        ScreenState = player1.Playing()
         pygame.display.update()
         continue
 
     
     if ScreenState == 4: # Two Player mode playing
-        pass
+        screen.fill(BLACK)
+        
+        # 先讓兩個都收到事件
+        if state1 != 5:
+            player12.ScreenState = ScreenState
+        if state2 != 5:
+            player22.ScreenState = ScreenState
+        if state1 != 5:
+            player12.Event(events)
+        if state2 != 5:
+            player22.Event(events)
+
+        # 再讓兩個都執行遊戲邏輯（比如移動、判定等）
+        if state1 != 5:
+            state1 = player12.Playing()
+        if state2 != 5:
+            state2 = player22.Playing()
+
+        # 根據情況決定最終的 ScreenState（例如某人Game Over）
+        # if state1 != ScreenState:
+        #     ScreenState = state1
+        # elif state2 != ScreenState:
+        #     ScreenState = state2
+        pygame.display.update()
+        if state1 == state2 == 5:
+            state1 = 4
+            state2 = 4
+            if player12.remove.score < player22.remove.score:
+                ScreenState = screenRender.TwoPlayerModeGameOver(1)
+            elif player12.remove.score > player22.remove.score:
+                ScreenState = screenRender.TwoPlayerModeGameOver(2)
+            else:
+                ScreenState = screenRender.TwoPlayerModeGameOver(3)
+                pass
+
+        pygame.display.update()
         continue
     
     if ScreenState == 5: # Single Mode GameOver
-        database.Update_Score("Temp", remove.score)
+        database.Update_Score("Temp", player1.remove.score)
         ScreenState = screenRender.SingleModeGameOver(1100, 200)
         pygame.display.update()
         continue

@@ -5,8 +5,9 @@ class Remove():
     
     
     
-    def __init__(self, get_score_sound, HEIGHT, screen):
-        self.movement = Movement(HEIGHT, screen)
+    def __init__(self, get_score_sound, HEIGHT, screen, movement):
+        # self.movement = Movement(HEIGHT, screen)
+        self.movement = movement
         self.score = 0
         self.score_old = 0
         self.level = 1

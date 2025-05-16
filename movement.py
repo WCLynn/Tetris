@@ -5,35 +5,32 @@ class Movement():
 
     # 所有Movement物件共用變數
     
-    def __init__(self, HEIGHT, screen):
-        self.blocks = Blocks()
+    def __init__(self, HEIGHT, screen, blocks):
+        self.blocks = blocks
         self.WHITE = (255, 255, 255)
         self.lines = []
         self.imgs = [] 
         self.draw_init()
-        self.screen = screen  
-        # self.lines.clear()  
-        # self.imgs.clear()
+        self.screen = screen 
         self.speed = 0.5
-        
         for i in range((HEIGHT-100)//30):
             self.lines.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         for i in range(3):
             self.lines.append([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
         self.gameover = False
         
-    def init(self, HEIGHT, screen):
-        self.draw_init()
-        self.screen = screen  
-        self.lines.clear()  
-        self.imgs.clear()
-        self.speed = 0.5
+    # def init(self, HEIGHT, screen):
+    #     self.draw_init()
+    #     self.screen = screen  
+    #     self.lines.clear()  
+    #     self.imgs.clear()
+    #     self.speed = 0.5
         
-        for i in range((HEIGHT-100)//30):
-            self.lines.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-        for i in range(3):
-            self.lines.append([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
-        self.gameover = False
+    #     for i in range((HEIGHT-100)//30):
+    #         self.lines.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+    #     for i in range(3):
+    #         self.lines.append([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+    #     self.gameover = False
 
     def draw_init(self):
         #隨機選擇初始圖形
@@ -54,7 +51,7 @@ class Movement():
             self.O[0] += 1
         self.region_judge()
         for j in range(len(self.n)):
-            self.X, self.Y = self.blocks.P1_all_InitPos[self.n[j]]
+            self.X, self.Y = self.blocks.all_InitPos[self.n[j]]
             self.X += self.SPEEDx
             self.Y += self.SPEEDy
             self.judge_touch()
@@ -113,7 +110,7 @@ class Movement():
     
     def HardDrop(self):
         for j in range(len(self.n)):
-            self.X, self.Y = self.blocks.P1_all_InitPos[self.n[j]]
+            self.X, self.Y = self.blocks.all_InitPos[self.n[j]]
             self.X += self.SPEEDx
             self.Y = (self.stop_line+self.blocks.mn_dic[self.n[j]][0])*30+50
             self.image = pygame.Surface((30, 30))
@@ -123,7 +120,8 @@ class Movement():
                 self.rect.x = self.X
                 self.rect.y = self.Y
                 self.imgs.append([self.image, [self.X, self.Y]])
-                self.lines[(self.Y-50)//30][(self.X-600)//30] = 1 # self.X-100
+                self.lines[(self.Y-50)//30][(self.X-self.blocks.CellX)//30] = 1 # self.X-100
+                # self.WIDTH-self.BAR_WIDTH-player1_X
                 if j == 3:
                     self.draw_init()
                 if self.Y == 50:
@@ -132,6 +130,7 @@ class Movement():
             if self.Y < 50: 
                 # self.gameover = True
                 return 5
+        print(self.lines)
 
 
     #旋轉系統

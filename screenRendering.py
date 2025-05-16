@@ -52,6 +52,26 @@ class ScreenRender():
         self.ScreenState = self.Button(("Go Back", 1400, 600, 100, 50, 0))
         return self.ScreenState
         # pygame.display.update() 
+    
+    def TwoPlayerModeGameOver(self, player):
+        img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
+        gameover_img = pygame.transform.scale(img, (200, 200))            
+        if player == 1:
+            x = 250
+            text = "GAME OVER"
+            self.screen.blit(gameover_img, (650, 200))
+        elif player == 2:
+            x = 1250
+            text = "GAME OVER"
+            self.screen.blit(gameover_img, (650, 200))
+        else:
+            x = 750
+            text = "DRAW"
+        
+        self.draw_text(text, 72, x, 350, self.WHITE)
+        self.ScreenState = self.Button(("Go Back", 1400, 600, 100, 50, 0))
+        return self.ScreenState
+    
                  
     def LeaderBoard(self, data):
         
