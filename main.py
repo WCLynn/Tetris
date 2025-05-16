@@ -49,10 +49,8 @@ pygame.mixer.music.set_volume(0.05)
 get_score_sound = pygame.mixer.Sound(os.path.join("Assests/sounds", "score.mp3"))
 
 #創建類別物件
-blocks = Blocks()
-movement = Movement()
-
-remove = Remove()
+# blocks = Blocks()
+# movement = Movement()
 
 ScreenState = 0
 screenRender = ScreenRender(screen, ScreenState, WIDTH, BAR_WIDTH, BAR_HEIGHT)
@@ -66,8 +64,9 @@ while running:
     Quit(events)
     
     if ScreenState == 0: # 初始畫面 Choose Mode
-        movement.init(HEIGHT, screen)
-        remove.init(get_score_sound)
+        remove = Remove(get_score_sound, HEIGHT, screen)
+        movement = remove.movement
+        blocks = movement.blocks
         ScreenState = screenRender.Initial()
         continue
         

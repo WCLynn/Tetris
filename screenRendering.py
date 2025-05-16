@@ -44,11 +44,7 @@ class ScreenRender():
         self.ScreenState = self.Button(("Start",700, 150, 100, 50, 4))
         if self.ScreenState == 4:
             return self.ScreenState
-        
-       
-            
-
-                    
+                  
     
     def GameCell(self, x, y, Cell_Edge, line_Width, Row_Cnt, Col_Cnt):
         rect = pygame.Rect(x, y, self.BAR_WIDTH, self.BAR_HEIGHT)
@@ -97,40 +93,42 @@ class ScreenRender():
         running = True 
         
         while running:
-            # self.screen.fill(self.WHITE)
             mouse_pos = pygame.mouse.get_pos()
             click = pygame.mouse.get_pressed()
+            
+            hovering = False  # 這個變數幫你記錄滑鼠有沒有 hover 到任一個按鈕
 
-            # hover 狀態切換顏色
             for button in buttons:
-                
                 text, x, y, width, height, ScreenState, *optional = button
                 color = optional[0] if len(optional) > 0 else default_color
                 hover_color = optional[1] if len(optional) > 1 else default_hover_color
                 txt_color = optional[2] if len(optional) > 2 else default_txt_color
                 button_rect = pygame.Rect(x, y, width, height)
-                text = font.render(text, True, txt_color)
-                
+                text_surface = font.render(text, True, txt_color)
+
                 if button_rect.collidepoint(mouse_pos):
-                    pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+                    hovering = True  # 記得有 hover 到
                     pygame.draw.rect(self.screen, hover_color, button_rect)
                     if click[0]:
-                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                         self.screen.fill(self.WHITE)
                         pygame.display.update()
                         return ScreenState
                 else:
-                    pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                     pygame.draw.rect(self.screen, color, button_rect)
 
-                # 畫上文字（置中）
-                text_rect = text.get_rect(center=button_rect.center)
-                self.screen.blit(text, text_rect)   
-            
-            
+                # 畫文字
+                text_rect = text_surface.get_rect(center=button_rect.center)
+                self.screen.blit(text_surface, text_rect)
+
+            # 根據 hover 狀態統一更新鼠標形狀（只更新一次）
+            if hovering:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+            else:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
             pygame.display.update()
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit()
-                    

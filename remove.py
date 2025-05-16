@@ -3,7 +3,15 @@ import pygame
 import os
 class Remove():
     
-    movement = Movement()
+    
+    
+    def __init__(self, get_score_sound, HEIGHT, screen):
+        self.movement = Movement(HEIGHT, screen)
+        self.score = 0
+        self.score_old = 0
+        self.level = 1
+        self.get_score_sound = get_score_sound
+    
     
     def init(self, get_score_sound):
         self.score = 0

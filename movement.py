@@ -4,11 +4,23 @@ from blocks import Blocks
 class Movement():
 
     # 所有Movement物件共用變數
-    blocks = Blocks()
-    WHITE = (255, 255, 255)
-    lines = []
-    imgs = []
-    speed = 0.5
+    
+    def __init__(self, HEIGHT, screen):
+        self.blocks = Blocks()
+        self.WHITE = (255, 255, 255)
+        self.lines = []
+        self.imgs = [] 
+        self.draw_init()
+        self.screen = screen  
+        # self.lines.clear()  
+        # self.imgs.clear()
+        self.speed = 0.5
+        
+        for i in range((HEIGHT-100)//30):
+            self.lines.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        for i in range(3):
+            self.lines.append([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+        self.gameover = False
         
     def init(self, HEIGHT, screen):
         self.draw_init()
