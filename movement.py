@@ -19,19 +19,6 @@ class Movement():
             self.lines.append([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
         self.gameover = False
         
-    # def init(self, HEIGHT, screen):
-    #     self.draw_init()
-    #     self.screen = screen  
-    #     self.lines.clear()  
-    #     self.imgs.clear()
-    #     self.speed = 0.5
-        
-    #     for i in range((HEIGHT-100)//30):
-    #         self.lines.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-    #     for i in range(3):
-    #         self.lines.append([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
-    #     self.gameover = False
-
     def draw_init(self):
         #隨機選擇初始圖形
         self.choose = random.choice(self.blocks.all_blocks[0:7])
@@ -120,7 +107,7 @@ class Movement():
                 self.rect.x = self.X
                 self.rect.y = self.Y
                 self.imgs.append([self.image, [self.X, self.Y]])
-                self.lines[(self.Y-50)//30][(self.X-self.blocks.CellX)//30] = 1 # self.X-100
+                self.lines[(self.Y-50)//30][(self.X-self.blocks.CellX)//30] = 1
                 # self.WIDTH-self.BAR_WIDTH-player1_X
                 if j == 3:
                     self.draw_init()
@@ -130,7 +117,6 @@ class Movement():
             if self.Y < 50: 
                 # self.gameover = True
                 return 5
-        print(self.lines)
 
 
     #旋轉系統
