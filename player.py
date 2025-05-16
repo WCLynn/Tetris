@@ -7,23 +7,24 @@ from remove import Remove
 from screenRendering import ScreenRender
 from database import DataBase
 from screenRendering import ScreenRender
+from setting import Setting
+
 class Player():
     BLACK = (0, 0, 0)
     LIGHT_GRAY = (128, 128, 128)
     WHITE = (255, 255, 255)
-      
-    def __init__(self, screen, HEIGHT, get_score_sound, ScreenState, player, mode, WIDTH, BAR_WIDTH, BAR_HEIGHT):
+ 
+    def __init__(self, ScreenState, player, mode):
         self.blocks = Blocks(player, mode)
-        self.movement = Movement(HEIGHT, screen, self.blocks)
-        self.remove = Remove(get_score_sound, HEIGHT, screen, self.movement)
+        self.movement = Movement(self.blocks)
+        self.remove = Remove(self.movement)
         self.mode = mode
         self.player = player
-        self.screenRender = ScreenRender(screen, ScreenState, WIDTH, BAR_WIDTH, BAR_HEIGHT)
-        self.screen = screen
+        self.screenRender = ScreenRender(ScreenState)
+        self.screen = Setting.screen
         self.ScreenState = ScreenState
-        self.WIDTH = WIDTH
-        self.BAR_WIDTH = BAR_WIDTH
-        self.BAR_HEIGHT = BAR_HEIGHT
+        self.WIDTH = Setting.WIDTH
+        self.BAR_WIDTH = Setting.BAR_WIDTH
         if mode == 1:
             self.rotate = pygame.K_UP
             self.right = pygame.K_RIGHT

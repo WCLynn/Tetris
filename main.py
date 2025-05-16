@@ -1,28 +1,18 @@
 from operator import ge
 import pygame
 import os
-from blocks import Blocks
-from movement import Movement
-from remove import Remove
 from screenRendering import ScreenRender
 from database import DataBase
 from player import Player
-FPS = 125
-WIDTH = 1500
-HEIGHT = 700
-BAR_WIDTH = 300
-BAR_HEIGHT = 600
+from setting import Setting
 
-#color name = (R, G, B)
-BLACK = (0, 0, 0)
-LIGHT_GRAY = (128, 128, 128)
-WHITE = (255, 255, 255)
 
 #遊戲初始化
 pygame.init()
 pygame.mixer.init()
+
 #創建視窗
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((Setting.WIDTH, Setting.HEIGHT))
 #更改檔名
 pygame.display.set_caption("TETRIS")
 #創建物件(管理操控時間)
@@ -40,25 +30,28 @@ def Quit(events):
 
 running = True
 
-img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
-gameover_img = pygame.transform.scale(img, (200, 200))
+
 icon = pygame.image.load(os.path.join("Assests/imgs", "icon.png")).convert()
-icon.set_colorkey(BLACK)
+icon.set_colorkey(Setting.BLACK)
 pygame.display.set_icon(icon)
 pygame.mixer.music.load(os.path.join("Assests/sounds", "happytime.mp3"))
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.05)
-get_score_sound = pygame.mixer.Sound(os.path.join("Assests/sounds", "score.mp3"))
+
+Setting.screen = screen
+Setting.get_score_sound = pygame.mixer.Sound(os.path.join("Assests/sounds", "score.mp3"))
+img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
+Setting.gameover_img = pygame.transform.scale(img, (200, 200))
 
 ScreenState = 0
-screenRender = ScreenRender(screen, ScreenState, WIDTH, BAR_WIDTH, BAR_HEIGHT)
+screenRender = ScreenRender(ScreenState)
 database = DataBase()
 state1 = 4
 state2 = 4
 while running:
 
     #1秒鐘內最多執行幾次
-    clock.tick(FPS)
+    clock.tick(Setting.FPS)
     events = pygame.event.get()
     Quit(events)
     
@@ -66,9 +59,9 @@ while running:
         database.TOP10_Data = []
     
     if ScreenState == 0: # 初始畫面 Choose Mode
-        player1 = Player(screen, HEIGHT, get_score_sound, ScreenState, 1, 1,  WIDTH, BAR_WIDTH, BAR_HEIGHT)
-        player12 = Player(screen, HEIGHT, get_score_sound, ScreenState, 1, 2,  WIDTH, BAR_WIDTH, BAR_HEIGHT)
-        player22 = Player(screen, HEIGHT, get_score_sound, ScreenState, 2, 2,  WIDTH, BAR_WIDTH, BAR_HEIGHT)
+        player1 = Player(ScreenState, 1, 1)
+        player12 = Player(ScreenState, 1, 2)
+        player22 = Player(ScreenState, 2, 2)
         ScreenState = screenRender.Initial()
         print("ScreenState: ", ScreenState)
         continue
@@ -84,7 +77,8 @@ while running:
         continue
 
     if ScreenState == 3: # Single mode playing
-        screen.fill(BLACK)
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        screen.fill(Setting.BLACK)
         player1.ScreenState = ScreenState
         player1.Event(events)
         ScreenState = player1.Playing()
@@ -93,7 +87,8 @@ while running:
 
     
     if ScreenState == 4: # Two Player mode playing
-        screen.fill(BLACK)
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        screen.fill(Setting.BLACK)
         
         # 先讓兩個都收到事件
         if state1 != 5:

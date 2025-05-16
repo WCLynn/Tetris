@@ -1,7 +1,7 @@
 import pygame
 import os
 from database import DataBase
-
+from setting import Setting
 class ScreenRender():
     
     BLACK = (0, 0, 0)
@@ -9,12 +9,12 @@ class ScreenRender():
     WHITE = (255, 255, 255)
     database = DataBase()
     
-    def __init__(self, screen, ScreenState, WIDTH, BAR_WIDTH, BAR_HEIGHT):
-        self.screen = screen
+    def __init__(self, ScreenState):
+        self.screen = Setting.screen
         self.ScreenState = ScreenState
-        self.WIDTH = WIDTH
-        self.BAR_WIDTH = BAR_WIDTH
-        self.BAR_HEIGHT = BAR_HEIGHT
+        self.WIDTH = Setting.WIDTH
+        self.BAR_WIDTH = Setting.BAR_WIDTH
+        self.BAR_HEIGHT = Setting.BAR_HEIGHT
     
     def Initial(self):
         self.screen.fill(self.WHITE)

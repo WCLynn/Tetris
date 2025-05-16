@@ -1,19 +1,19 @@
 import random
 import pygame
 from blocks import Blocks
+from setting import Setting
 class Movement():
 
-    # 所有Movement物件共用變數
-    
-    def __init__(self, HEIGHT, screen, blocks):
+
+    def __init__(self, blocks):
         self.blocks = blocks
-        self.WHITE = (255, 255, 255)
+        self.WHITE = Setting.WHITE
         self.lines = []
         self.imgs = [] 
         self.draw_init()
-        self.screen = screen 
+        self.screen = Setting.screen 
         self.speed = 0.5
-        for i in range((HEIGHT-100)//30):
+        for i in range((Setting.HEIGHT-100)//30):
             self.lines.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         for i in range(3):
             self.lines.append([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])

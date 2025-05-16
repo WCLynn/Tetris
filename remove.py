@@ -1,24 +1,24 @@
 from movement import Movement
 import pygame
 import os
+from setting import Setting
 class Remove():
     
     
-    
-    def __init__(self, get_score_sound, HEIGHT, screen, movement):
+    def __init__(self, movement):
         # self.movement = Movement(HEIGHT, screen)
         self.movement = movement
         self.score = 0
         self.score_old = 0
         self.level = 1
-        self.get_score_sound = get_score_sound
+        self.get_score_sound = Setting.get_score_sound
     
     
-    def init(self, get_score_sound):
-        self.score = 0
-        self.score_old = 0
-        self.level = 1
-        self.get_score_sound = get_score_sound
+    # def init(self, get_score_sound):
+    #     self.score = 0
+    #     self.score_old = 0
+    #     self.level = 1
+    #     self.get_score_sound = get_score_sound
 
     def break_judge(self):
         for i in self.movement.lines:
