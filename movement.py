@@ -2,6 +2,7 @@ import random
 import pygame
 from blocks import Blocks
 from setting import Setting
+import block_render
 class Movement():
 
 
@@ -56,11 +57,12 @@ class Movement():
                     return 5
             else:
                 if self.Y >= 50:
-                    fill_rect = pygame.Rect(self.X, self.Y, 30, 30)
-                    pygame.draw.rect(self.screen, self.color, fill_rect)
+                    block_render.draw_fill_block(self.screen, self.X, self.Y, self.color)
+
                 if self.stop_line >= 0:
-                    outline_rect = pygame.Rect(self.X, (self.stop_line+self.blocks.mn_dic[self.n[j]][0])*30+50, 30, 30)
-                    pygame.draw.rect(self.screen, self.WHITE, outline_rect, 3)
+                    y_outline = (self.stop_line + self.blocks.mn_dic[self.n[j]][0]) * 30 + 50
+                    block_render.draw_outline_block(self.screen, self.X, y_outline, self.WHITE)
+
         self.speed_n += 1
         return ScreenState
 
@@ -100,8 +102,8 @@ class Movement():
             self.X, self.Y = self.blocks.all_InitPos[self.n[j]]
             self.X += self.SPEEDx
             self.Y = (self.stop_line+self.blocks.mn_dic[self.n[j]][0])*30+50
-            self.image = pygame.Surface((30, 30))
-            self.image.fill(self.color)
+            self.image = block_render.create_filled_surface(self.color)
+    
             self.rect = self.image.get_rect()
             if self.Y >= 50:
                 self.rect.x = self.X
