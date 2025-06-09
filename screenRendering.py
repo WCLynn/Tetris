@@ -17,13 +17,36 @@ class ScreenRender():
         self.BAR_HEIGHT = Setting.BAR_HEIGHT
     
     def Initial(self):
-        self.screen.fill(self.WHITE)
-        self.ScreenState = self.Button(("Single",150, 120, 150, 50, 1), ("Two Player",150, 480, 150, 50, 2), ("Leaderboard", 300, 190, 180, 50, 7))
-        return self.ScreenState
+        # 載入並縮放背景圖
+        self.bg_img = pygame.image.load("assests/imgs/background.png")
+        self.bg_img = pygame.transform.scale(self.bg_img, self.screen.get_size())
+        self.screen.blit(self.bg_img, (0, 0))
+        pygame.display.update()
+
+        single_rect = pygame.Rect(650, 410, 250, 50)
+        two_player_rect = pygame.Rect(650, 480, 250, 50)
+        leaderboard_rect = pygame.Rect(650, 550, 250, 50)
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if single_rect.collidepoint(mouse_pos):
+                        return 1  # Single mode
+                    elif two_player_rect.collidepoint(mouse_pos):
+                        return 2  # Two Player mode
+                    elif leaderboard_rect.collidepoint(mouse_pos):
+                        return 7  # Leaderboard
+        #self.screen.fill(self.WHITE)
+        # self.ScreenState = self.Button(("Single",650, 410, 250, 50, 1), ("Two Player",650, 480, 250, 50, 2), ("Leaderboard", 650, 550, 250, 50, 7))
+        # return self.ScreenState
         
 
     def SingleMode_Start(self):
         #遊戲畫面顯示
+        self.screen.fill(self.BLACK)
         player_Y = 50
         player1_X = 600
         self.GameCell(player1_X,player_Y,30,2,20,10)
@@ -34,6 +57,7 @@ class ScreenRender():
                     
     def TwoPlayerMode_Start(self):
         #遊戲畫面顯示
+        self.screen.fill(self.BLACK)
         player_Y = 50
         player1_X = 100
         player2_X = self.WIDTH-self.BAR_WIDTH-player1_X
@@ -126,6 +150,7 @@ class ScreenRender():
         running = True 
         
         while running:
+            
             mouse_pos = pygame.mouse.get_pos()
             click = pygame.mouse.get_pressed()
             
