@@ -23,24 +23,29 @@ class ScreenRender():
         self.screen.blit(self.bg_img, (0, 0))
         pygame.display.update()
 
-        single_rect = pygame.Rect(650, 410, 250, 50)
-        two_player_rect = pygame.Rect(650, 480, 250, 50)
-        leaderboard_rect = pygame.Rect(650, 550, 250, 50)
+        single_rect = pygame.Rect(820, 410, 265, 50) # 650, 410, 250, 50
+        two_player_rect = pygame.Rect(820, 480, 265, 50)
+        leaderboard_rect = pygame.Rect(820, 550, 265, 50)
         while True:
             for event in pygame.event.get():
+                mouse_pos = pygame.mouse.get_pos()
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    mouse_pos = pygame.mouse.get_pos()
                     if single_rect.collidepoint(mouse_pos):
                         return 1  # Single mode
                     elif two_player_rect.collidepoint(mouse_pos):
                         return 2  # Two Player mode
                     elif leaderboard_rect.collidepoint(mouse_pos):
                         return 7  # Leaderboard
-        #self.screen.fill(self.WHITE)
-        # self.ScreenState = self.Button(("Single",650, 410, 250, 50, 1), ("Two Player",650, 480, 250, 50, 2), ("Leaderboard", 650, 550, 250, 50, 7))
+                if single_rect.collidepoint(mouse_pos) or two_player_rect.collidepoint(mouse_pos) or leaderboard_rect.collidepoint(mouse_pos):
+                    pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+                else:
+                    pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                    
+        # self.screen.fill(self.WHITE)
+        # self.ScreenState = self.Button(("Single",820, 410, 265, 50, 1), ("Two Player",820, 480, 265, 50, 2), ("Leaderboard", 820, 550, 265, 50, 7))
         # return self.ScreenState
         
 
@@ -150,7 +155,9 @@ class ScreenRender():
         running = True 
         
         while running:
-            
+            # self.bg_img = pygame.image.load("assests/imgs/background.png")
+            # self.bg_img = pygame.transform.scale(self.bg_img, self.screen.get_size())
+            # self.screen.blit(self.bg_img, (0, 0))
             mouse_pos = pygame.mouse.get_pos()
             click = pygame.mouse.get_pressed()
             

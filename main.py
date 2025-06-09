@@ -5,7 +5,8 @@ from screenRendering import ScreenRender
 from database import DataBase
 from player import Player
 from setting import Setting
-
+import ctypes
+ctypes.windll.user32.SetProcessDPIAware()
 
 #遊戲初始化
 pygame.init()
@@ -59,6 +60,7 @@ while running:
         database.TOP10_Data = []
     
     if ScreenState == 0: # 初始畫面 Choose Mode
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         player1 = Player(ScreenState, 1, 1)
         player12 = Player(ScreenState, 1, 2)
         player22 = Player(ScreenState, 2, 2)
@@ -84,7 +86,6 @@ while running:
         ScreenState = player1.Playing()
         pygame.display.update()
         continue
-
     
     if ScreenState == 4: # Two Player mode playing
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
