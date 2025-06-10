@@ -138,17 +138,26 @@ while running:
             player22.Event(events)
 
         # 再讓兩個都執行遊戲邏輯（比如移動、判定等）
-        if state1 != 5:
-            state1 = player12.Playing()
-        if state2 != 5:
-            state2 = player22.Playing()
+        # if state1 != 5:
+        #     state1 = player12.Playing()
+        # else:
+        state1 = player12.Playing(1, player22.ScreenState)
+        #if state2 != 5:
+        state2 = player22.Playing(2, player12.ScreenState)
+
+        # if state1 == 5:
+        #     for i, j in player12.movement.imgs:
+        #         player12.screen.blit(i, j)
+        # if state2 == 5:
+        #     for i, j in player22.movement.imgs:
+        #         player22.screen.blit(i, j)
 
         # 根據情況決定最終的 ScreenState（例如某人Game Over）
         # if state1 != ScreenState:
         #     ScreenState = state1
         # elif state2 != ScreenState:
         #     ScreenState = state2
-        pygame.display.update()
+        #pygame.display.update()
         if state1 == state2 == 5:
             state1 = 4
             state2 = 4

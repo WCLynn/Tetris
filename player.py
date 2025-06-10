@@ -60,21 +60,22 @@ class Player():
             #     if event.text == ' ':
             #         self.movement.Hard_Drop = True
                     
-    def Playing(self):
-        #畫面顯示
-        
-        
-        #移動系統
-        self.ScreenState = self.movement.draw(self.ScreenState)
-        for i, j in self.movement.imgs:
-            self.screen.blit(i, j)
-        #消行系統
-        self.remove.break_judge()
-        if self.remove.score - self.remove.score_old >= 80:
-            self.remove.score_old = self.remove.score
-            self.movement.speed += 0.25
-            self.remove.level += 1   
-        
+    def Playing(self, player = 0, EnemyState = None): # 如果player = 0 and EnemyState = None -> 單人模式
+        if self.ScreenState == 5:
+            for i, j in self.movement.imgs:
+                self.screen.blit(i, j)    
+        else:
+            #移動系統
+            self.ScreenState = self.movement.draw(self.ScreenState)
+            for i, j in self.movement.imgs:
+                self.screen.blit(i, j)
+            #消行系統
+            self.remove.break_judge()
+            if self.remove.score - self.remove.score_old >= 80:
+                self.remove.score_old = self.remove.score
+                self.movement.speed += 0.25
+                self.remove.level += 1   
+            
         if self.mode == 1:  
             player_Y = 50
             player1_X = 600
@@ -83,13 +84,21 @@ class Player():
             player_Y = 50
             player1_X = 100
             player2_X = self.WIDTH-self.BAR_WIDTH-player1_X
-            self.screenRender.GameCell(player1_X,player_Y,30,2,20,10)
-            self.screenRender.GameCell(player2_X,player_Y,30,2,20,10)
+            if player == 1:
+                self.screenRender.GameCell(player1_X,player_Y,30,2,20,10)
+            elif player == 2:
+                self.screenRender.GameCell(player2_X,player_Y,30,2,20,10)
         if self.mode == 2 and self.player == 2:
             x = 1000
         else:
             x = 500
             
+        if self.ScreenState == 5 and EnemyState != None and EnemyState != 5:
+            if player == 1:
+                self.screenRender.draw_text("DEAD", 72, 250, 250, self.WHITE)
+            elif player == 2:
+                self.screenRender.draw_text("DEAD", 72, 1250, 250, self.WHITE)  
+                
         self.screenRender.draw_text(f"Score {self.remove.score}", 32, x, 100, self.WHITE)
         self.screenRender.draw_text(f"Level {self.remove.level}", 32, x, 150, self.WHITE)
         return self.ScreenState
