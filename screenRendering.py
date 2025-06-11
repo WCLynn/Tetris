@@ -102,27 +102,50 @@ class ScreenRender():
         # pygame.display.update() 
     
     def TwoPlayerModeGameOver(self, player):
-        # 先用黑色長方形遮住2.png
-        image2 = pygame.image.load("assests/imgs/2.png").convert_alpha()
-        x2, y2 = 700, 400  # 根據實際顯示位置調整
-        pygame.draw.rect(self.screen, (0, 0, 0), (x2, y2, image2.get_width(), image2.get_height()))
-        # 再顯示level_1.jpg
-        img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
-        gameover_img = pygame.transform.scale(img, (200, 200))            
+        # player 輸的那個
+        #img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
+        #gameover_img = pygame.transform.scale(img, (200, 200))            
         if player == 1:
+            x = 750
+
             text_P1 = "YOU LOSE"
             text_P2 = "YOU WIN"
-            self.screen.blit(gameover_img, (650, 200))
+            image2 = pygame.image.load("assests/imgs/3.png").convert_alpha()
+            x2, y2 = 400, 200  # 根據實際顯示位置調整
+            pygame.draw.rect(self.screen, (0, 0, 0), (x2, y2, 600, 250))
+            text_2= self.player2_name + " WIN"
+            text = self.player1_name + " LOSE"
+            self.draw_text(text_2, 72, x, 250, self.WHITE)
+            self.draw_text(text, 72, x, 400, self.WHITE)
+            #self.screen.blit(gameover_img, (650, 200))
         elif player == 2:
+            x = 750
+
             text_P1 = "YOU WIN"
             text_P2 = "YOU LOSE"
-            self.screen.blit(gameover_img, (650, 200))
+            image2 = pygame.image.load("assests/imgs/3.png").convert_alpha()
+            x2, y2 = 400, 200  # 根據實際顯示位置調整
+            pygame.draw.rect(self.screen, (0, 0, 0), (x2, y2, 600, 250))
+            text_2= self.player1_name + " WIN"
+            text = self.player2_name + " LOSE"
+            self.draw_text(text_2, 72, x, 250, self.WHITE)
+            self.draw_text(text, 72, x, 400, self.WHITE)
+            #self.screen.blit(gameover_img, (650, 200))
 
-        if player == 1 or player == 2:
-            self.draw_text(text_P1, 72, 250, 350, self.WHITE)
-            self.draw_text(text_P2, 72, 1250, 350, self.WHITE)
+        #if player == 1 or player == 2:
+            #self.draw_text(text_P1, 72, 250, 350, self.WHITE)
+            #self.draw_text(text_P2, 72, 1250, 350, self.WHITE)
         else:
-            self.draw_text("DRAW", 72, 750, 350, self.WHITE)
+            x = 750
+            text = "DRAW"
+            # 先用黑色長方形遮住2.png
+            image2 = pygame.image.load("assests/imgs/3.png").convert_alpha()
+            x2, y2 = 400, 200  # 根據實際顯示位置調整
+            pygame.draw.rect(self.screen, (0, 0, 0), (x2, y2, 600, 250))
+            self.draw_text(text, 72, x, 350, self.WHITE)
+            
+        #self.draw_text(text, 72, x, 350, self.WHITE)
+        #self.draw_text("DRAW", 72, 750, 350, self.WHITE)
         self.ScreenState = self.Button(("Go Back", 1400, 600, 100, 50, 0))
         return self.ScreenState
     
