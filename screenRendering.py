@@ -101,7 +101,7 @@ class ScreenRender():
         return self.ScreenState
         # pygame.display.update() 
     
-    def TwoPlayerModeGameOver(self, player):
+    def TwoPlayerModeGameOver(self, player12, player22,player):
         # player 輸的那個
         #img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
         #gameover_img = pygame.transform.scale(img, (200, 200))            
@@ -143,7 +143,7 @@ class ScreenRender():
             x2, y2 = 400, 200  # 根據實際顯示位置調整
             pygame.draw.rect(self.screen, (0, 0, 0), (x2, y2, 600, 250))
             self.draw_text(text, 72, x, 350, self.WHITE)
-            
+
         #self.draw_text(text, 72, x, 350, self.WHITE)
         #self.draw_text("DRAW", 72, 750, 350, self.WHITE)
         self.ScreenState = self.Button(("Go Back", 1400, 600, 100, 50, 0))
