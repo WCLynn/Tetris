@@ -69,15 +69,21 @@ while True:
         ScreenState = screenRender.Initial()
         print("ScreenState: ", ScreenState)
         continue
-
+    name_state = 0
     if ScreenState == 1:  # Single mode start
-        name_state = screenRender.NameInput(is_two_player=False)
-        if name_state == 1:  # If name input is complete
-            ScreenState = screenRender.SingleMode_Start()
+        # name_state = screenRender.NameInput(is_two_player=False)
+        # if name_state == 1:  # If name input is complete
+        #     ScreenState = screenRender.SingleMode_Start()
+        while name_state != 1:
+            name_state = screenRender.NameInput(is_two_player=False)
+        ScreenState = screenRender.SingleMode_Start()
     elif ScreenState == 2:  # Two Player mode start
-        name_state = screenRender.NameInput(is_two_player=True)
-        if name_state == 1:  # If both names are complete
-            ScreenState = screenRender.TwoPlayerMode_Start()
+        # name_state = screenRender.NameInput(is_two_player=True)
+        # if name_state == 1:  # If both names are complete
+        #     ScreenState = screenRender.TwoPlayerMode_Start()
+        while name_state != 1:
+            name_state = screenRender.NameInput(is_two_player=True)
+        ScreenState = screenRender.TwoPlayerMode_Start()
     elif ScreenState == 3:  # Single mode playing
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         screen.fill(Setting.BLACK)

@@ -93,11 +93,11 @@ class Player():
         else:
             x = 500
             
-        if self.ScreenState == 5 and EnemyState != None and EnemyState != 5:
-            if player == 1:
-                self.screenRender.draw_text("DEAD", 72, 250, 250, self.WHITE)
-            elif player == 2:
-                self.screenRender.draw_text("DEAD", 72, 1250, 250, self.WHITE)  
+        # if self.ScreenState == 5 and EnemyState != None and EnemyState != 5:
+        #     if player == 1:
+        #         self.screenRender.draw_text("DEAD", 72, 250, 250, self.WHITE)
+        #     elif player == 2:
+        #         self.screenRender.draw_text("DEAD", 72, 1250, 250, self.WHITE)  
                 
         self.screenRender.draw_text(f"Score {self.remove.score}", 32, x, 100, self.WHITE)
         self.screenRender.draw_text(f"Level {self.remove.level}", 32, x, 150, self.WHITE)
