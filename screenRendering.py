@@ -114,9 +114,9 @@ class ScreenRender():
             x2, y2 = 400, 200  # 根據實際顯示位置調整
             pygame.draw.rect(self.screen, (0, 0, 0), (x2, y2, 600, 250))
             text_2= self.player2_name + " WIN"
-            text = self.player1_name + " LOSE"
-            self.draw_text(text_2, 72, x, 250, self.WHITE)
-            self.draw_text(text, 72, x, 400, self.WHITE)
+            #text = self.player1_name + " LOSE"
+            self.draw_text(text_2, 72, x, 350, self.WHITE)
+            #self.draw_text(text, 72, x, 400, self.WHITE)
             #self.screen.blit(gameover_img, (650, 200))
         elif player == 2:
             x = 750
@@ -127,9 +127,9 @@ class ScreenRender():
             x2, y2 = 400, 200  # 根據實際顯示位置調整
             pygame.draw.rect(self.screen, (0, 0, 0), (x2, y2, 600, 250))
             text_2= self.player1_name + " WIN"
-            text = self.player2_name + " LOSE"
-            self.draw_text(text_2, 72, x, 250, self.WHITE)
-            self.draw_text(text, 72, x, 400, self.WHITE)
+            #text = self.player2_name + " LOSE"
+            self.draw_text(text_2, 72, x, 350, self.WHITE)
+            #self.draw_text(text, 72, x, 400, self.WHITE)
             #self.screen.blit(gameover_img, (650, 200))
 
         #if player == 1 or player == 2:
