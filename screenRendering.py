@@ -71,7 +71,7 @@ class ScreenRender():
         self.GameCell(player1_X,player_Y,30,2,20,10, self.player1_name)  # 添加玩家名字
         pygame.display.update()
 
-        self.ScreenState = self.Button(("Start",300, 150, 100, 50, 3), ("Go Back", 1400, 600, 100, 50, 0))
+        self.ScreenState = self.Button(("Start",300, 150, 100, 50, 3), ("Go Back", 1000, 600, 100, 50, 0))
         return self.ScreenState
                     
     def TwoPlayerMode_Start(self):
@@ -84,7 +84,7 @@ class ScreenRender():
         self.GameCell(player2_X,player_Y,30,2,20,10)
         pygame.display.update()
 
-        self.ScreenState = self.Button(("Start",700, 150, 100, 50, 4), ("Go Back", 1400, 600, 100, 50, 0))
+        self.ScreenState = self.Button(("Start",700, 150, 100, 50, 4), ("Go Back", 700, 600, 100, 50, 0))
         return self.ScreenState
      
     def SingleModeGameOver(self, x, y):
@@ -97,7 +97,7 @@ class ScreenRender():
         gameover_img = pygame.transform.scale(img, (200, 200))
         self.screen.blit(gameover_img, (x, y))
         self.draw_text("GAME OVER", 72, x+100, y+260, self.WHITE)
-        self.ScreenState = self.Button(("Go Back", 1400, 600, 100, 50, 0))
+        self.ScreenState = self.Button(("Go Back", 1000, 600, 100, 50, 0))
         return self.ScreenState
         # pygame.display.update() 
     
@@ -146,7 +146,7 @@ class ScreenRender():
 
         #self.draw_text(text, 72, x, 350, self.WHITE)
         #self.draw_text("DRAW", 72, 750, 350, self.WHITE)
-        self.ScreenState = self.Button(("Go Back", 1400, 600, 100, 50, 0))
+        self.ScreenState = self.Button(("Go Back", 700, 600, 100, 50, 0))
         return self.ScreenState
     
                  
@@ -170,7 +170,7 @@ class ScreenRender():
             self.draw_text(str(score), 60, score_x, y, self.BLACK)  # 字體縮小一點
             Cnt += 80
         pygame.display.update()
-        self.ScreenState = self.Button(("Go Back", 1400, 600, 100, 50, 0))    
+        self.ScreenState = self.Button(("Go Back", 1300, 600, 100, 50, 0))    
         return self.ScreenState
             
     
@@ -209,9 +209,11 @@ class ScreenRender():
     # ("離開",     100, 300, 150, 50, 0)
     # )
     def Button(self, *buttons):
-        default_color = (0, 128, 255)
+        # default_color = (0, 128, 255)
+        default_color = Setting.WHITE
         default_hover_color = (0, 200, 255)
-        default_txt_color = (255, 255, 255)
+        #default_txt_color = (255, 255, 255)
+        default_txt_color = Setting.BLACK
         font = pygame.font.SysFont(None, 36)
         
         running = True 
@@ -232,7 +234,10 @@ class ScreenRender():
                 txt_color = optional[2] if len(optional) > 2 else default_txt_color
                 button_rect = pygame.Rect(x, y, width, height)
                 text_surface = font.render(text, True, txt_color)
-
+                text_surface.get_rect(center=button_rect.center)
+                Outline_rect = pygame.Rect(x+2, y+2, width, height)
+                pygame.draw.rect(self.screen, hover_color, button_rect)
+                pygame.draw.rect(self.screen, Setting.BLACK, Outline_rect, width=2)
                 if button_rect.collidepoint(mouse_pos):
                     hovering = True  # 記得有 hover 到
                     pygame.draw.rect(self.screen, hover_color, button_rect)

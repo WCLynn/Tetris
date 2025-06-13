@@ -23,6 +23,7 @@ class Movement():
     def draw_init(self):
         #隨機選擇初始圖形
         self.choose = random.choice(self.blocks.all_blocks[0:7])
+        #一種圖形有不同方向 隨機選一個
         self.n = random.choice(self.choose)
         self.color = self.blocks.all_colors[self.blocks.all_blocks.index(self.choose)]
         self.Hard_Drop = False
@@ -54,6 +55,15 @@ class Movement():
             if (self.Y-50)//30 >= self.stop_line+self.blocks.mn_dic[self.n[j]][0] or self.Hard_Drop == True:
                 temp = self.HardDrop()
                 if temp == 5:
+                    for k in range(len(self.n)):
+                        self.X, self.Y = self.blocks.all_InitPos[self.n[k]]
+                        self.X += self.SPEEDx
+                        self.Y = (self.stop_line+self.blocks.mn_dic[self.n[k]][0])*30+50
+                        if self.Y < 50:
+                            continue
+                        self.imgs.append([self.image, [self.X, self.Y]])
+                        self.lines[(self.Y-50)//30][(self.X-self.blocks.CellX)//30] = 1
+                        block_render.draw_fill_block(self.screen, self.X, self.Y, self.color)
                     return 5
             else:
                 if self.Y >= 50:

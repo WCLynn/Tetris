@@ -151,29 +151,50 @@ while True:
         player_Y = 50
         player1_X = 100
         player2_X = Setting.WIDTH-Setting.BAR_WIDTH-player1_X
-        screenRender.GameCell(player1_X, player_Y, 30, 2, 20, 10, screenRender.player1_name)
-        screenRender.GameCell(player2_X, player_Y, 30, 2, 20, 10, screenRender.player2_name)
+        
         screenRender.draw_text(f"Score {player12.remove.score}", 32, 500, 100, Setting.WHITE)
         screenRender.draw_text(f"Level {player12.remove.level}", 32, 500, 150, Setting.WHITE)
         screenRender.draw_text(f"Score {player22.remove.score}", 32, 1000, 100, Setting.WHITE)
         screenRender.draw_text(f"Level {player22.remove.level}", 32, 1000, 150, Setting.WHITE) 
+
+
+        screenRender.GameCell(player1_X, player_Y, 30, 2, 20, 10, screenRender.player1_name)
+        screenRender.GameCell(player2_X, player_Y, 30, 2, 20, 10, screenRender.player2_name)
+        
         # 當一位玩家結束時顯示game over圖片（只在另一方還沒結束時顯示）
         if state1 == 5 and state2 != 5:
+            for i, j in player12.movement.imgs:
+                player12.screen.blit(i, j)  
+            screenRender.GameCell(player1_X, player_Y, 30, 2, 20, 10, screenRender.player1_name)
+            screenRender.GameCell(player2_X, player_Y, 30, 2, 20, 10, screenRender.player2_name) 
             img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
             gameover_img = pygame.transform.scale(img, (200, 200))
             screen.blit(gameover_img, (250, 500))
             screenRender.draw_text("GAME OVER", 72, 250, 500, Setting.WHITE)
+
         if state2 == 5 and state1 != 5:
+            for i, j in player22.movement.imgs:
+                player22.screen.blit(i, j)  
+            screenRender.GameCell(player1_X, player_Y, 30, 2, 20, 10, screenRender.player1_name)
+            screenRender.GameCell(player2_X, player_Y, 30, 2, 20, 10, screenRender.player2_name)
             img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
             gameover_img = pygame.transform.scale(img, (200, 200))
             screen.blit(gameover_img, (1250, 500))
             screenRender.draw_text("GAME OVER", 72, 1250, 500, Setting.WHITE)
-        pygame.display.update()
+            
         # 當兩位玩家都結束遊戲時才進入結算畫面
         if state1 == 5 and state2 == 5:
             state1 = 4
             state2 = 4
             ScreenState = 6
+            for i, j in player12.movement.imgs:
+                player12.screen.blit(i, j)    
+            for i, j in player22.movement.imgs:
+                player22.screen.blit(i, j)  
+            screenRender.GameCell(player1_X, player_Y, 30, 2, 20, 10, screenRender.player1_name)
+            screenRender.GameCell(player2_X, player_Y, 30, 2, 20, 10, screenRender.player2_name)
+                
+        pygame.display.update()
         continue
 
     elif ScreenState == 5:  # Single Mode GameOver
@@ -181,15 +202,16 @@ while True:
         ScreenState = screenRender.SingleModeGameOver(1100, 200)
         pygame.display.update()
     elif ScreenState == 6:  # Two Player Mode GameOver
-        database.Update_Score(screenRender.player1_name, player12.remove.score)
-        database.Update_Score(screenRender.player2_name, player22.remove.score)
         if player12.remove.score < player22.remove.score:
             ScreenState = screenRender.TwoPlayerModeGameOver(player12, player22,1)
         elif player12.remove.score > player22.remove.score:
             ScreenState = screenRender.TwoPlayerModeGameOver(player12, player22,2)
         else:
             ScreenState = screenRender.TwoPlayerModeGameOver(player12, player22,3)
+
         pygame.display.update()
+        database.Update_Score(screenRender.player1_name, player12.remove.score)
+        database.Update_Score(screenRender.player2_name, player22.remove.score)
     elif ScreenState == 7:  # Leaderboard
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         if not database.TOP10_Data:
