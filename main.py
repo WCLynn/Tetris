@@ -1,6 +1,7 @@
 from operator import ge
 import pygame
 import os
+import sys
 from screenRendering import ScreenRender
 from database import DataBase
 from player import Player
@@ -8,6 +9,10 @@ from setting import Setting
 import ctypes
 ctypes.windll.user32.SetProcessDPIAware()
 
+def switchLang(HKL):
+    hkl = ctypes.windll.user32.LoadKeyboardLayoutW(HKL, 1)  # EN-US
+    ctypes.windll.user32.ActivateKeyboardLayout(hkl, 0)
+    
 #遊戲初始化
 pygame.init()
 pygame.mixer.init()
@@ -20,14 +25,13 @@ pygame.display.set_caption("TETRIS")
 clock = pygame.time.Clock()
 
 init = True
-font_name = os.path.join("Assests/fonts", "font.ttf")
 
 
 def Quit(events):
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
-            exit()
+            sys.exit()
 
 running = True
 
@@ -43,14 +47,13 @@ Setting.screen = screen
 Setting.get_score_sound = pygame.mixer.Sound(os.path.join("Assests/sounds", "score.mp3"))
 img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
 Setting.gameover_img = pygame.transform.scale(img, (200, 200))
-
+Setting.Button_sound = pygame.mixer.Sound(os.path.join("Assests/sounds", "Button.wav"))
 
 ScreenState = 0
 screenRender = ScreenRender(ScreenState)
 database = DataBase()
 state1 = 4
 state2 = 4
-last_state = None  # 用於追蹤狀態變化
 
 while True:
     #1秒鐘內最多執行幾次
@@ -82,6 +85,7 @@ while True:
         ScreenState = screenRender.TwoPlayerMode_Start()
     
     elif ScreenState == 3:  # Single mode playing
+        switchLang("00000409")
         # 畫面顯示
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         screen.fill(Setting.BLACK)
@@ -103,8 +107,9 @@ while True:
         # 遊玩區域
         ScreenState = player1.Playing()
         pygame.display.update()
-    
+
     elif ScreenState == 4:  # Two Player mode playing
+        switchLang("00000409")
         # 畫面顯示
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         screen.fill(Setting.BLACK)
@@ -194,11 +199,13 @@ while True:
         pygame.display.update()
 
     elif ScreenState == 5:  # Single Mode GameOver
-        database.Update_Score(screenRender.player1_name, player1.remove.score)
+        switchLang("00000404")
         ScreenState = screenRender.SingleModeGameOver(1100, 200)
         pygame.display.update()
+        database.Update_Score(screenRender.player1_name, player1.remove.score)
     
     elif ScreenState == 6:  # Two Player Mode GameOver
+        switchLang("00000404")
         if player12.remove.score < player22.remove.score:
             ScreenState = screenRender.TwoPlayerModeGameOver(player12, player22,1)
         elif player12.remove.score > player22.remove.score:

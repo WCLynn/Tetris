@@ -15,3 +15,5 @@ class Setting():
     WHITE = (255, 255, 255)
     LIGHT_SKY_BLUE = pygame.Color('lightskyblue3')
     DODGER_BLUE = pygame.Color('dodgerblue2')
+    Button_sound = None
+    

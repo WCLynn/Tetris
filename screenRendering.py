@@ -1,5 +1,6 @@
 import pygame
 import os
+import sys
 from database import DataBase
 from setting import Setting
 class ScreenRender():
@@ -41,13 +42,16 @@ class ScreenRender():
                 mouse_pos = pygame.mouse.get_pos()
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                    exit()
+                    sys.exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     if single_rect.collidepoint(mouse_pos):
+                        Setting.Button_sound.play()
                         return 1  # Single mode
                     elif two_player_rect.collidepoint(mouse_pos):
+                        Setting.Button_sound.play()
                         return 2  # Two Player mode
                     elif leaderboard_rect.collidepoint(mouse_pos):
+                        Setting.Button_sound.play()
                         return 7  # Leaderboard
                 if single_rect.collidepoint(mouse_pos) or two_player_rect.collidepoint(mouse_pos) or leaderboard_rect.collidepoint(mouse_pos):
                     pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
@@ -220,8 +224,8 @@ class ScreenRender():
             # Setting.screen.blit(self.bg_img, (0, 0))
             mouse_pos = pygame.mouse.get_pos()
             click = pygame.mouse.get_pressed()
-            
             hovering = False  # 這個變數幫你記錄滑鼠有沒有 hover 到任一個按鈕
+            
 
             for button in buttons:
                 text, x, y, width, height, ScreenState, *optional = button
@@ -239,6 +243,7 @@ class ScreenRender():
                     pygame.draw.rect(Setting.screen, hover_color, button_rect)
                     if click[0]:
                         Setting.screen.fill(self.WHITE)
+                        Setting.Button_sound.play()
                         pygame.display.update()
                         return ScreenState
                 else:
@@ -259,7 +264,7 @@ class ScreenRender():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                    exit()
+                    sys.exit()
 
     def NameInput(self, is_two_player=False):
         # 初始化必要的屬性
@@ -316,7 +321,7 @@ class ScreenRender():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                exit()
+                sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if input_rect.collidepoint(event.pos):
                     self.input_active = True
