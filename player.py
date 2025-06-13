@@ -20,10 +20,7 @@ class Player():
         self.mode = mode
         self.player = player
         self.screenRender = ScreenRender(ScreenState)
-        self.screen = Setting.screen
         self.ScreenState = ScreenState
-        self.WIDTH = Setting.WIDTH
-        self.BAR_WIDTH = Setting.BAR_WIDTH
         if mode == 1:
             self.rotate = pygame.K_UP
             self.right = pygame.K_RIGHT
@@ -62,12 +59,12 @@ class Player():
     def Playing(self, player = 0, EnemyState = None): # 如果player = 0 and EnemyState = None -> 單人模式
         if self.ScreenState == 5:
             for i, j in self.movement.imgs:
-                self.screen.blit(i, j)    
+                Setting.screen.blit(i, j)    
         else:
             #移動系統
             self.ScreenState = self.movement.draw(self.ScreenState)
             for i, j in self.movement.imgs:
-                self.screen.blit(i, j)
+                Setting.screen.blit(i, j)
             #消行系統
             self.remove.break_Check()
             if self.remove.score - self.remove.score_old >= 80:
@@ -82,7 +79,7 @@ class Player():
         else:
             player_Y = 50
             player1_X = 100
-            player2_X = self.WIDTH-self.BAR_WIDTH-player1_X
+            player2_X = Setting.WIDTH-Setting.BAR_WIDTH-player1_X
             if player == 1:
                 self.screenRender.GameCell(player1_X,player_Y,30,2,20,10, self.screenRender.player1_name)
             elif player == 2:
@@ -92,6 +89,6 @@ class Player():
         else:
             x = 500
                 
-        self.screenRender.draw_text(f"Score {self.remove.score}", 32, x, 100, self.WHITE)
-        self.screenRender.draw_text(f"Level {self.remove.level}", 32, x, 150, self.WHITE)
+        self.screenRender.draw_text(f"Score {self.remove.score}", 32, x, 100, Setting.WHITE)
+        self.screenRender.draw_text(f"Level {self.remove.level}", 32, x, 150, Setting.WHITE)
         return self.ScreenState
