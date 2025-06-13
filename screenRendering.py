@@ -10,18 +10,14 @@ class ScreenRender():
     database = DataBase()
     
     def __init__(self, ScreenState):
-        self.screen = Setting.screen
         self.ScreenState = ScreenState
-        self.WIDTH = Setting.WIDTH
-        self.BAR_WIDTH = Setting.BAR_WIDTH
-        self.BAR_HEIGHT = Setting.BAR_HEIGHT
         self.player1_name = ""
         self.player2_name = ""
         self.input_active = False
         self.current_player = 1  # 1 for player 1, 2 for player 2
-        self.input_rect = pygame.Rect(self.WIDTH//2 - 150, 300, 300, 50)
-        self.color_inactive = pygame.Color('lightskyblue3')
-        self.color_active = pygame.Color('dodgerblue2')
+        self.input_rect = pygame.Rect(Setting.WIDTH//2 - 150, 300, 300, 50)
+        self.color_inactive = Setting.LIGHT_SKY_BLUE
+        self.color_active = Setting.DODGER_BLUE
         self.color = self.color_inactive
         self.cursor_visible = True
         self.cursor_timer = 0
@@ -33,8 +29,8 @@ class ScreenRender():
     def Initial(self):
         # 載入並縮放背景圖
         self.bg_img = pygame.image.load("assests/imgs/background.png")
-        self.bg_img = pygame.transform.scale(self.bg_img, self.screen.get_size())
-        self.screen.blit(self.bg_img, (0, 0))
+        self.bg_img = pygame.transform.scale(self.bg_img, Setting.screen.get_size())
+        Setting.screen.blit(self.bg_img, (0, 0))
         pygame.display.update()
 
         single_rect = pygame.Rect(820, 410, 265, 50) # 650, 410, 250, 50
@@ -58,14 +54,14 @@ class ScreenRender():
                 else:
                     pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                     
-        # self.screen.fill(self.WHITE)
+        # Setting.screen.fill(self.WHITE)
         # self.ScreenState = self.Button(("Single",820, 410, 265, 50, 1), ("Two Player",820, 480, 265, 50, 2), ("Leaderboard", 820, 550, 265, 50, 7))
         # return self.ScreenState
         
 
     def SingleMode_Start(self):
         #遊戲畫面顯示
-        self.screen.fill(self.BLACK)
+        Setting.screen.fill(self.BLACK)
         player_Y = 50
         player1_X = 600
         self.GameCell(player1_X,player_Y,30,2,20,10, self.player1_name)  # 添加玩家名字
@@ -76,10 +72,10 @@ class ScreenRender():
                     
     def TwoPlayerMode_Start(self):
         #遊戲畫面顯示
-        self.screen.fill(self.BLACK)
+        Setting.screen.fill(self.BLACK)
         player_Y = 50
         player1_X = 100
-        player2_X = self.WIDTH-self.BAR_WIDTH-player1_X
+        player2_X = Setting.WIDTH-Setting.BAR_WIDTH-player1_X
         self.GameCell(player1_X,player_Y,30,2,20,10)
         self.GameCell(player2_X,player_Y,30,2,20,10)
         pygame.display.update()
@@ -91,11 +87,11 @@ class ScreenRender():
         # 先用黑色長方形遮住2.png
         image2 = pygame.image.load("assests/imgs/3.png").convert_alpha()
         x2, y2 = 900, 90  # 根據實際顯示位置調整
-        pygame.draw.rect(self.screen, (0, 0, 0), (x2, y2, image2.get_width(), image2.get_height()))
+        pygame.draw.rect(Setting.screen, (0, 0, 0), (x2, y2, image2.get_width(), image2.get_height()))
         # 再顯示level_1.jpg
         img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
-        gameover_img = pygame.transform.scale(img, (200, 200))
-        self.screen.blit(gameover_img, (x, y))
+        # gameover_img = pygame.transform.scale(img, (200, 200))
+        Setting.screen.blit(Setting.gameover_img, (x, y))
         self.draw_text("GAME OVER", 72, x+100, y+260, self.WHITE)
         self.ScreenState = self.Button(("Go Back", 1000, 600, 100, 50, 0))
         return self.ScreenState
@@ -112,12 +108,12 @@ class ScreenRender():
             text_P2 = "YOU WIN"
             image2 = pygame.image.load("assests/imgs/3.png").convert_alpha()
             x2, y2 = 400, 200  # 根據實際顯示位置調整
-            pygame.draw.rect(self.screen, (0, 0, 0), (x2, y2, 600, 250))
+            pygame.draw.rect(Setting.screen, (0, 0, 0), (x2, y2, 600, 250))
             text_2= self.player2_name + " WIN"
             #text = self.player1_name + " LOSE"
             self.draw_text(text_2, 72, x, 350, self.WHITE)
             #self.draw_text(text, 72, x, 400, self.WHITE)
-            #self.screen.blit(gameover_img, (650, 200))
+            #Setting.screen.blit(gameover_img, (650, 200))
         elif player == 2:
             x = 750
 
@@ -125,12 +121,12 @@ class ScreenRender():
             text_P2 = "YOU LOSE"
             image2 = pygame.image.load("assests/imgs/3.png").convert_alpha()
             x2, y2 = 400, 200  # 根據實際顯示位置調整
-            pygame.draw.rect(self.screen, (0, 0, 0), (x2, y2, 600, 250))
+            pygame.draw.rect(Setting.screen, (0, 0, 0), (x2, y2, 600, 250))
             text_2= self.player1_name + " WIN"
             #text = self.player2_name + " LOSE"
             self.draw_text(text_2, 72, x, 350, self.WHITE)
             #self.draw_text(text, 72, x, 400, self.WHITE)
-            #self.screen.blit(gameover_img, (650, 200))
+            #Setting.screen.blit(gameover_img, (650, 200))
 
         #if player == 1 or player == 2:
             #self.draw_text(text_P1, 72, 250, 350, self.WHITE)
@@ -141,7 +137,7 @@ class ScreenRender():
             # 先用黑色長方形遮住2.png
             image2 = pygame.image.load("assests/imgs/3.png").convert_alpha()
             x2, y2 = 400, 200  # 根據實際顯示位置調整
-            pygame.draw.rect(self.screen, (0, 0, 0), (x2, y2, 600, 250))
+            pygame.draw.rect(Setting.screen, (0, 0, 0), (x2, y2, 600, 250))
             self.draw_text(text, 72, x, 350, self.WHITE)
 
         #self.draw_text(text, 72, x, 350, self.WHITE)
@@ -156,7 +152,7 @@ class ScreenRender():
         # 將圖片縮放到整個畫面大小
         top_img = pygame.transform.scale(top_img, (Setting.WIDTH, Setting.HEIGHT))
         # 將圖片作為背景
-        self.screen.blit(top_img, (0, 0))
+        Setting.screen.blit(top_img, (0, 0))
         
         Cnt = 0
         for item in data[:5]:
@@ -177,16 +173,16 @@ class ScreenRender():
     
     
     def GameCell(self, x, y, Cell_Edge, line_Width, Row_Cnt, Col_Cnt, player_name=None):
-        rect = pygame.Rect(x, y, self.BAR_WIDTH, self.BAR_HEIGHT)
-        pygame.draw.rect(self.screen, self.LIGHT_GRAY, rect, line_Width)
+        rect = pygame.Rect(x, y, Setting.BAR_WIDTH, Setting.BAR_HEIGHT)
+        pygame.draw.rect(Setting.screen, self.LIGHT_GRAY, rect, line_Width)
         for i in range(Col_Cnt-1):
-            pygame.draw.line(self.screen, self.LIGHT_GRAY, (x+(i+1)*Cell_Edge, y), (x+(i+1)*Cell_Edge, Cell_Edge*Row_Cnt-line_Width+y), line_Width)
+            pygame.draw.line(Setting.screen, self.LIGHT_GRAY, (x+(i+1)*Cell_Edge, y), (x+(i+1)*Cell_Edge, Cell_Edge*Row_Cnt-line_Width+y), line_Width)
         for i in range(Row_Cnt-1):
-            pygame.draw.line(self.screen, self.LIGHT_GRAY, (x, y+Cell_Edge+i*Cell_Edge), (Cell_Edge*Col_Cnt-line_Width+x, y+Cell_Edge+i*Cell_Edge), line_Width)
+            pygame.draw.line(Setting.screen, self.LIGHT_GRAY, (x, y+Cell_Edge+i*Cell_Edge), (Cell_Edge*Col_Cnt-line_Width+x, y+Cell_Edge+i*Cell_Edge), line_Width)
         
         # Display player name if provided
         if player_name:
-            self.draw_text(player_name, 32, x + self.BAR_WIDTH//2, y - 30, self.WHITE)
+            self.draw_text(player_name, 32, x + Setting.BAR_WIDTH//2, y - 30, self.WHITE)
             
     
     def draw_text(self, text, size, x, y, color):
@@ -197,7 +193,7 @@ class ScreenRender():
         TEXT_rect = TEXT.get_rect()
         TEXT_rect.centerx = x
         TEXT_rect.centery = y
-        self.screen.blit(TEXT, TEXT_rect)
+        Setting.screen.blit(TEXT, TEXT_rect)
         # pygame.display.update()
         
 
@@ -220,8 +216,8 @@ class ScreenRender():
         
         while running:
             # self.bg_img = pygame.image.load("assests/imgs/background.png")
-            # self.bg_img = pygame.transform.scale(self.bg_img, self.screen.get_size())
-            # self.screen.blit(self.bg_img, (0, 0))
+            # self.bg_img = pygame.transform.scale(self.bg_img, Setting.screen.get_size())
+            # Setting.screen.blit(self.bg_img, (0, 0))
             mouse_pos = pygame.mouse.get_pos()
             click = pygame.mouse.get_pressed()
             
@@ -236,21 +232,21 @@ class ScreenRender():
                 text_surface = font.render(text, True, txt_color)
                 text_surface.get_rect(center=button_rect.center)
                 Outline_rect = pygame.Rect(x+2, y+2, width, height)
-                pygame.draw.rect(self.screen, hover_color, button_rect)
-                pygame.draw.rect(self.screen, Setting.BLACK, Outline_rect, width=2)
+                pygame.draw.rect(Setting.screen, hover_color, button_rect)
+                pygame.draw.rect(Setting.screen, Setting.BLACK, Outline_rect, width=2)
                 if button_rect.collidepoint(mouse_pos):
                     hovering = True  # 記得有 hover 到
-                    pygame.draw.rect(self.screen, hover_color, button_rect)
+                    pygame.draw.rect(Setting.screen, hover_color, button_rect)
                     if click[0]:
-                        self.screen.fill(self.WHITE)
+                        Setting.screen.fill(self.WHITE)
                         pygame.display.update()
                         return ScreenState
                 else:
-                    pygame.draw.rect(self.screen, color, button_rect)
+                    pygame.draw.rect(Setting.screen, color, button_rect)
 
                 # 畫文字
                 text_rect = text_surface.get_rect(center=button_rect.center)
-                self.screen.blit(text_surface, text_rect)
+                Setting.screen.blit(text_surface, text_rect)
 
             # 根據 hover 狀態統一更新鼠標形狀（只更新一次）
             if hovering:
@@ -274,8 +270,6 @@ class ScreenRender():
             self.input_active = True  # 預設為激活狀態
             self.current_player = 1
             self.current_name = ""  # 用於存儲當前輸入的文字
-            self.color_inactive = pygame.Color('lightskyblue3')
-            self.color_active = pygame.Color('dodgerblue2')
             self.cursor_visible = True
             self.cursor_timer = pygame.time.get_ticks()  # 初始化計時器
             self.composition = ""  # 用於存儲正在輸入的中文字符
@@ -283,7 +277,7 @@ class ScreenRender():
             self.input_font = pygame.font.SysFont("microsoftjhenghei", 32)
 
         # 清除畫面
-        self.screen.fill(Setting.BLACK)
+        Setting.screen.fill(Setting.BLACK)
         
         # 繪製標題
         if is_two_player:
@@ -292,20 +286,20 @@ class ScreenRender():
             title = "Player 1 Name"
         title_surface = self.title_font.render(title, True, Setting.WHITE)
         title_rect = title_surface.get_rect(center=(Setting.WIDTH//2, 100))
-        self.screen.blit(title_surface, title_rect)
+        Setting.screen.blit(title_surface, title_rect)
         
         # 繪製輸入框
         input_rect = pygame.Rect(Setting.WIDTH//2 - 200, 200, 400, 50)
-        pygame.draw.rect(self.screen, self.color_active if self.input_active else self.color_inactive, input_rect, 2)
+        pygame.draw.rect(Setting.screen, self.color_active if self.input_active else self.color_inactive, input_rect, 2)
         
         # 繪製當前輸入的文字
         text_surface = self.input_font.render(self.current_name + self.composition, True, Setting.WHITE)
-        self.screen.blit(text_surface, (input_rect.x + 5, input_rect.y + 10))
+        Setting.screen.blit(text_surface, (input_rect.x + 5, input_rect.y + 10))
         
         # 繪製閃爍的光標
         if self.input_active and self.cursor_visible:
             cursor_x = input_rect.x + 5 + text_surface.get_width()
-            pygame.draw.line(self.screen, Setting.WHITE, 
+            pygame.draw.line(Setting.screen, Setting.WHITE, 
                            (cursor_x, input_rect.y + 5),
                            (cursor_x, input_rect.y + 45), 2)
         
@@ -313,7 +307,7 @@ class ScreenRender():
         hint_text = "Press Enter to continue"
         hint_surface = self.input_font.render(hint_text, True, Setting.WHITE)
         hint_rect = hint_surface.get_rect(center=(Setting.WIDTH//2, 300))
-        self.screen.blit(hint_surface, hint_rect)
+        Setting.screen.blit(hint_surface, hint_rect)
         
         # 更新畫面
         pygame.display.flip()

@@ -6,21 +6,13 @@ class Remove():
     
     
     def __init__(self, movement):
-        # self.movement = Movement(HEIGHT, screen)
         self.movement = movement
         self.score = 0
         self.score_old = 0
         self.level = 1
-        self.get_score_sound = Setting.get_score_sound
-    
-    
-    # def init(self, get_score_sound):
-    #     self.score = 0
-    #     self.score_old = 0
-    #     self.level = 1
-    #     self.get_score_sound = get_score_sound
-
-    def break_judge(self):
+ 
+    # 判斷哪些Lines要消除
+    def break_Check(self):
         for i in self.movement.lines:
             judge_filled = 0
             for j in i:
@@ -32,11 +24,11 @@ class Remove():
                 self.movement.lines.remove(i)
                 self.movement.lines.insert(0, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
                 
-
+    # 消除Lines
     def break_lines(self, line):
         self.imgs_re = []
         self.score += int(self.movement.speed*10)
-        self.get_score_sound.play()
+        Setting.get_score_sound.play()
         for h in range(len(self.movement.imgs)):
             if self.movement.imgs[h][1][1] == line*30+50:
                 self.imgs_re.append(self.movement.imgs[h])

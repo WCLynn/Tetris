@@ -9,11 +9,12 @@ class Movement():
     def __init__(self, blocks):
         self.blocks = blocks
         self.WHITE = Setting.WHITE
-        self.lines = []
-        self.imgs = [] 
+        self.lines = [] # 存放遊戲狀態[[0,...,0],...,[1,...,1]]
+        self.imgs = [] # 存放要畫的所有方塊和座標 [image, [x, y]]
         self.draw_init()
         self.screen = Setting.screen 
         self.speed = 0.5
+        # 建立遊戲狀態二維陣列
         for i in range((Setting.HEIGHT-100)//30):
             self.lines.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         for i in range(3):
@@ -43,7 +44,7 @@ class Movement():
             self.X, self.Y = self.blocks.all_InitPos[self.n[j]]
             self.X += self.SPEEDx
             self.Y += self.SPEEDy
-            self.judge_touch()
+            self.Check_touch()
             if self.O[0] >= 0: O = self.O[0]
             else: O = 0
             for i in range(O, len(self.judge_list)):
@@ -52,9 +53,11 @@ class Movement():
                     break
                 if self.judge_list.count(True) == 19:
                     self.stop_line = 18
+            # 觸碰到停止線(最上方的方塊) 或 按下空白鍵
             if (self.Y-50)//30 >= self.stop_line+self.blocks.mn_dic[self.n[j]][0] or self.Hard_Drop == True:
                 temp = self.HardDrop()
                 if temp == 5:
+                    # 繪製最後一個圖形 (略過超出邊界的方塊)
                     for k in range(len(self.n)):
                         self.X, self.Y = self.blocks.all_InitPos[self.n[k]]
                         self.X += self.SPEEDx
@@ -66,6 +69,7 @@ class Movement():
                         block_render.draw_fill_block(self.screen, self.X, self.Y, self.color)
                     return 5
             else:
+                # 繪製圖形及落下的提示外框
                 if self.Y >= 50:
                     block_render.draw_fill_block(self.screen, self.X, self.Y, self.color)
 
@@ -76,6 +80,7 @@ class Movement():
         self.speed_n += 1
         return ScreenState
 
+    # 判斷是否超出邊界
     def region_judge(self):
         self.judge_R = []
         for i in self.n:
@@ -95,7 +100,8 @@ class Movement():
             self.O[1] -= 1
             self.SPEEDx -= 30
 
-    def judge_touch(self):
+    # 判斷是否碰到其他方塊
+    def Check_touch(self):
         self.judge_list = []
         for i in range(0, 19):
             judge_objects = 0
@@ -106,7 +112,7 @@ class Movement():
                 self.judge_list.append(True)
             else: self.judge_list.append(False)
 
-    
+    # 直接落下 (空白鍵)
     def HardDrop(self):
         for j in range(len(self.n)):
             self.X, self.Y = self.blocks.all_InitPos[self.n[j]]

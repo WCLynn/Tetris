@@ -7,7 +7,7 @@ class DataBase():
     url = "https://eywvcvsyhxfgjahzuemt.supabase.co"
     Supabase_key = os.getenv("Supabase_key")
     supabase: Client = create_client(url, Supabase_key)
-    TOP10_Data = []
+    TOP5_Data = []
     
     def Get_Score_By_Name(self, name):
         response = self.supabase.table("Score").select("Score").eq("Name", name).execute()

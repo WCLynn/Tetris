@@ -58,8 +58,9 @@ while True:
     events = pygame.event.get()
     Quit(events)
     
+    # 只要ScreenState != 7 (不是Leaderboard頁面) 前五名資料就為空 -> 若TOP5_Data為空才從資料庫取資料 持續停留在7才不會重複取資料
     if ScreenState != 7:
-        database.TOP10_Data = []
+        database.TOP5_Data = []
 
     if ScreenState == 0:  # 初始畫面 Choose Mode
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
@@ -67,24 +68,21 @@ while True:
         player12 = Player(ScreenState, 1, 2)
         player22 = Player(ScreenState, 2, 2)
         ScreenState = screenRender.Initial()
-        print("ScreenState: ", ScreenState)
-        continue
-    name_state = 0
+
     if ScreenState == 1:  # Single mode start
-        # name_state = screenRender.NameInput(is_two_player=False)
-        # if name_state == 1:  # If name input is complete
-        #     ScreenState = screenRender.SingleMode_Start()
+        name_state = 0
         while name_state != 1:
             name_state = screenRender.NameInput(is_two_player=False)
         ScreenState = screenRender.SingleMode_Start()
+    
     elif ScreenState == 2:  # Two Player mode start
-        # name_state = screenRender.NameInput(is_two_player=True)
-        # if name_state == 1:  # If both names are complete
-        #     ScreenState = screenRender.TwoPlayerMode_Start()
+        name_state = 0
         while name_state != 1:
             name_state = screenRender.NameInput(is_two_player=True)
         ScreenState = screenRender.TwoPlayerMode_Start()
+    
     elif ScreenState == 3:  # Single mode playing
+        # 畫面顯示
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         screen.fill(Setting.BLACK)
         player1.ScreenState = ScreenState
@@ -102,9 +100,12 @@ while True:
         new_height = int(image3.get_height() * scale_factor)
         image3 = pygame.transform.scale(image3, (new_width, new_height))
         screen.blit(image3, (Setting.WIDTH - new_width - 20, 80))
+        # 遊玩區域
         ScreenState = player1.Playing()
         pygame.display.update()
+    
     elif ScreenState == 4:  # Two Player mode playing
+        # 畫面顯示
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         screen.fill(Setting.BLACK)
         # 顯示圖片5於左上角
@@ -130,7 +131,13 @@ while True:
         new_height = int(image9.get_height() * scale_factor)
         image9 = pygame.transform.scale(image9, (new_width, new_height))
         screen.blit(image9, (Setting.WIDTH - new_width - 500, 200))
-        
+        screenRender.draw_text(f"Score {player12.remove.score}", 32, 500, 100, Setting.WHITE)
+        screenRender.draw_text(f"Level {player12.remove.level}", 32, 500, 150, Setting.WHITE)
+        screenRender.draw_text(f"Score {player22.remove.score}", 32, 1000, 100, Setting.WHITE)
+        screenRender.draw_text(f"Level {player22.remove.level}", 32, 1000, 150, Setting.WHITE) 
+
+        screenRender.GameCell(player1_X, player_Y, 30, 2, 20, 10, screenRender.player1_name)
+        screenRender.GameCell(player2_X, player_Y, 30, 2, 20, 10, screenRender.player2_name)
         # 先讓兩個都收到事件
         if state1 != 5:
             player12.ScreenState = ScreenState
@@ -141,25 +148,15 @@ while True:
         if state2 != 5:
             player22.Event(events)
             
-        # 再讓兩個都執行遊戲邏輯（比如移動、判定等）
+        # (遊玩區域)再讓兩個都執行遊戲邏輯（比如移動、判定等）
         if state1 != 5:
             state1 = player12.Playing(1, player22.ScreenState)
         if state2 != 5:
             state2 = player22.Playing(2, player12.ScreenState)
 
-        # 顯示玩家名字和遊戲區域
         player_Y = 50
         player1_X = 100
         player2_X = Setting.WIDTH-Setting.BAR_WIDTH-player1_X
-        
-        screenRender.draw_text(f"Score {player12.remove.score}", 32, 500, 100, Setting.WHITE)
-        screenRender.draw_text(f"Level {player12.remove.level}", 32, 500, 150, Setting.WHITE)
-        screenRender.draw_text(f"Score {player22.remove.score}", 32, 1000, 100, Setting.WHITE)
-        screenRender.draw_text(f"Level {player22.remove.level}", 32, 1000, 150, Setting.WHITE) 
-
-
-        screenRender.GameCell(player1_X, player_Y, 30, 2, 20, 10, screenRender.player1_name)
-        screenRender.GameCell(player2_X, player_Y, 30, 2, 20, 10, screenRender.player2_name)
         
         # 當一位玩家結束時顯示game over圖片（只在另一方還沒結束時顯示）
         if state1 == 5 and state2 != 5:
@@ -168,8 +165,8 @@ while True:
             screenRender.GameCell(player1_X, player_Y, 30, 2, 20, 10, screenRender.player1_name)
             screenRender.GameCell(player2_X, player_Y, 30, 2, 20, 10, screenRender.player2_name) 
             img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
-            gameover_img = pygame.transform.scale(img, (200, 200))
-            screen.blit(gameover_img, (250, 500))
+            #gameover_img = pygame.transform.scale(img, (200, 200))
+            screen.blit(Setting.gameover_img, (250, 500))
             screenRender.draw_text("GAME OVER", 72, 250, 500, Setting.WHITE)
 
         if state2 == 5 and state1 != 5:
@@ -178,8 +175,8 @@ while True:
             screenRender.GameCell(player1_X, player_Y, 30, 2, 20, 10, screenRender.player1_name)
             screenRender.GameCell(player2_X, player_Y, 30, 2, 20, 10, screenRender.player2_name)
             img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
-            gameover_img = pygame.transform.scale(img, (200, 200))
-            screen.blit(gameover_img, (1250, 500))
+            # gameover_img = pygame.transform.scale(img, (200, 200))
+            screen.blit(Setting.gameover_img, (1250, 500))
             screenRender.draw_text("GAME OVER", 72, 1250, 500, Setting.WHITE)
             
         # 當兩位玩家都結束遊戲時才進入結算畫面
@@ -195,12 +192,12 @@ while True:
             screenRender.GameCell(player2_X, player_Y, 30, 2, 20, 10, screenRender.player2_name)
                 
         pygame.display.update()
-        continue
 
     elif ScreenState == 5:  # Single Mode GameOver
         database.Update_Score(screenRender.player1_name, player1.remove.score)
         ScreenState = screenRender.SingleModeGameOver(1100, 200)
         pygame.display.update()
+    
     elif ScreenState == 6:  # Two Player Mode GameOver
         if player12.remove.score < player22.remove.score:
             ScreenState = screenRender.TwoPlayerModeGameOver(player12, player22,1)
@@ -212,8 +209,9 @@ while True:
         pygame.display.update()
         database.Update_Score(screenRender.player1_name, player12.remove.score)
         database.Update_Score(screenRender.player2_name, player22.remove.score)
+    
     elif ScreenState == 7:  # Leaderboard
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-        if not database.TOP10_Data:
-            database.TOP10_Data = database.Get_Top10()
-        ScreenState = screenRender.LeaderBoard(database.TOP10_Data)
+        if not database.TOP5_Data:
+            database.TOP5_Data = database.Get_Top10()
+        ScreenState = screenRender.LeaderBoard(database.TOP5_Data)

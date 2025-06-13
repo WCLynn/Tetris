@@ -5,7 +5,6 @@ from blocks import Blocks
 from movement import Movement
 from remove import Remove
 from screenRendering import ScreenRender
-from database import DataBase
 from screenRendering import ScreenRender
 from setting import Setting
 
@@ -70,7 +69,7 @@ class Player():
             for i, j in self.movement.imgs:
                 self.screen.blit(i, j)
             #消行系統
-            self.remove.break_judge()
+            self.remove.break_Check()
             if self.remove.score - self.remove.score_old >= 80:
                 self.remove.score_old = self.remove.score
                 self.movement.speed += 0.25

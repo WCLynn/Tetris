@@ -13,8 +13,5 @@ class Setting():
     BLACK = (0, 0, 0)
     LIGHT_GRAY = (128, 128, 128)
     WHITE = (255, 255, 255)
-    
-    # def init(self, get_score_sound, gameover_img, screen):
-    #     self.screen = screen
-    #     self.get_score_sound = get_score_sound
-    #     self.gameover_img = gameover_img
+    LIGHT_SKY_BLUE = pygame.Color('lightskyblue3')
+    DODGER_BLUE = pygame.Color('dodgerblue2')
