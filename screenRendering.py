@@ -29,7 +29,7 @@ class ScreenRender():
     
     def Initial(self):
         # 載入並縮放背景圖
-        self.bg_img = pygame.image.load("assests/imgs/background.png")
+        self.bg_img = pygame.image.load("assets/imgs/background.png")
         self.bg_img = pygame.transform.scale(self.bg_img, Setting.screen.get_size())
         Setting.screen.blit(self.bg_img, (0, 0))
         pygame.display.update()
@@ -80,8 +80,8 @@ class ScreenRender():
         player_Y = 50
         player1_X = 100
         player2_X = Setting.WIDTH-Setting.BAR_WIDTH-player1_X
-        self.GameCell(player1_X,player_Y,30,2,20,10)
-        self.GameCell(player2_X,player_Y,30,2,20,10)
+        self.GameCell(player1_X,player_Y,30,2,20,10, self.player1_name)
+        self.GameCell(player2_X,player_Y,30,2,20,10, self.player2_name)
         pygame.display.update()
 
         self.ScreenState = self.Button(("Start",700, 150, 100, 50, 4), ("Go Back", 700, 600, 100, 50, 0))
@@ -89,11 +89,11 @@ class ScreenRender():
      
     def SingleModeGameOver(self, x, y):
         # 先用黑色長方形遮住2.png
-        image2 = pygame.image.load("assests/imgs/3.png").convert_alpha()
+        image2 = pygame.image.load("assets/imgs/3.png").convert_alpha()
         x2, y2 = 900, 90  # 根據實際顯示位置調整
         pygame.draw.rect(Setting.screen, (0, 0, 0), (x2, y2, image2.get_width(), image2.get_height()))
         # 再顯示level_1.jpg
-        img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
+        img = pygame.image.load("assets/imgs/level_1.jpg").convert()
         # gameover_img = pygame.transform.scale(img, (200, 200))
         Setting.screen.blit(Setting.gameover_img, (x, y))
         self.draw_text("GAME OVER", 72, x+100, y+260, self.WHITE)
@@ -103,14 +103,14 @@ class ScreenRender():
     
     def TwoPlayerModeGameOver(self, player12, player22,player):
         # player 輸的那個
-        #img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
+        #img = pygame.image.load(os.path.join("assets/imgs", "level_1.jpg")).convert()
         #gameover_img = pygame.transform.scale(img, (200, 200))            
         if player == 1:
             x = 750
 
             text_P1 = "YOU LOSE"
             text_P2 = "YOU WIN"
-            image2 = pygame.image.load("assests/imgs/3.png").convert_alpha()
+            image2 = pygame.image.load("assets/imgs/3.png").convert_alpha()
             x2, y2 = 400, 200  # 根據實際顯示位置調整
             pygame.draw.rect(Setting.screen, (0, 0, 0), (x2, y2, 600, 250))
             text_2= self.player2_name + " WIN"
@@ -123,7 +123,7 @@ class ScreenRender():
 
             text_P1 = "YOU WIN"
             text_P2 = "YOU LOSE"
-            image2 = pygame.image.load("assests/imgs/3.png").convert_alpha()
+            image2 = pygame.image.load("assets/imgs/3.png").convert_alpha()
             x2, y2 = 400, 200  # 根據實際顯示位置調整
             pygame.draw.rect(Setting.screen, (0, 0, 0), (x2, y2, 600, 250))
             text_2= self.player1_name + " WIN"
@@ -139,7 +139,7 @@ class ScreenRender():
             x = 750
             text = "DRAW"
             # 先用黑色長方形遮住2.png
-            image2 = pygame.image.load("assests/imgs/3.png").convert_alpha()
+            image2 = pygame.image.load("assets/imgs/3.png").convert_alpha()
             x2, y2 = 400, 200  # 根據實際顯示位置調整
             pygame.draw.rect(Setting.screen, (0, 0, 0), (x2, y2, 600, 250))
             self.draw_text(text, 72, x, 350, self.WHITE)
@@ -152,7 +152,7 @@ class ScreenRender():
                  
     def LeaderBoard(self, data):
         # 載入並顯示 top.png 作為背景
-        top_img = pygame.image.load("assests/imgs/top.png").convert_alpha()
+        top_img = pygame.image.load("assets/imgs/top.png").convert_alpha()
         # 將圖片縮放到整個畫面大小
         top_img = pygame.transform.scale(top_img, (Setting.WIDTH, Setting.HEIGHT))
         # 將圖片作為背景
@@ -190,7 +190,7 @@ class ScreenRender():
             
     
     def draw_text(self, text, size, x, y, color):
-        font_name = os.path.join("Assests/fonts", "font.ttf")
+        font_name = "assets/fonts/font.ttf"
         font = pygame.font.Font(font_name, size)
         #繪製文字(文字, 平滑值, 文字顏色, 背景顏色)
         TEXT = font.render(text, True, color)
@@ -219,7 +219,7 @@ class ScreenRender():
         running = True 
         
         while running:
-            # self.bg_img = pygame.image.load("assests/imgs/background.png")
+            # self.bg_img = pygame.image.load("assets/imgs/background.png")
             # self.bg_img = pygame.transform.scale(self.bg_img, Setting.screen.get_size())
             # Setting.screen.blit(self.bg_img, (0, 0))
             mouse_pos = pygame.mouse.get_pos()
