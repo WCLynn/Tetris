@@ -4,7 +4,7 @@ import os
 
 class DataBase():
     load_dotenv()
-    url = "https://eywvcvsyhxfgjahzuemt.supabase.co"
+    url = os.getenv("Supabase_url")
     Supabase_key = os.getenv("Supabase_key")
     supabase: Client = create_client(url, Supabase_key)
     TOP5_Data = []
