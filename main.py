@@ -9,7 +9,7 @@ from setting import Setting
 import ctypes
 ctypes.windll.user32.SetProcessDPIAware()
 
-# pyinstaller --onefile --windowed --icon="Assests/imgs/icon.ico" main.py
+# pyinstaller --onefile --windowed --icon="Assets/imgs/icon.ico" main.py
 
 def switchLang(HKL):
     hkl = ctypes.windll.user32.LoadKeyboardLayoutW(HKL, 1)
@@ -38,18 +38,18 @@ def Quit(events):
 running = True
 
 
-icon = pygame.image.load(os.path.join("Assests/imgs", "icon.png")).convert()
+icon = pygame.image.load(os.path.join("Assets/imgs", "icon.png")).convert()
 icon.set_colorkey(Setting.BLACK)
 pygame.display.set_icon(icon)
-pygame.mixer.music.load(os.path.join("Assests/sounds", "happytime.mp3"))
+pygame.mixer.music.load(os.path.join("Assets/sounds", "happytime.mp3"))
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.05)
 
 Setting.screen = screen
-Setting.get_score_sound = pygame.mixer.Sound(os.path.join("Assests/sounds", "score.mp3"))
-img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
+Setting.get_score_sound = pygame.mixer.Sound(os.path.join("Assets/sounds", "score.mp3"))
+img = pygame.image.load(os.path.join("Assets/imgs", "level_1.jpg")).convert()
 Setting.gameover_img = pygame.transform.scale(img, (200, 200))
-Setting.Button_sound = pygame.mixer.Sound(os.path.join("Assests/sounds", "Button.wav"))
+Setting.Button_sound = pygame.mixer.Sound(os.path.join("Assets/sounds", "Button.wav"))
 
 ScreenState = 0
 screenRender = ScreenRender(ScreenState)
@@ -93,12 +93,12 @@ while True:
         screen.fill(Setting.BLACK)
         player1.ScreenState = ScreenState
         player1.Event(events)
-        image = pygame.image.load("assests/imgs/1.png").convert_alpha()
+        image = pygame.image.load("Assets/imgs/1.png").convert_alpha()
         screen.blit(image, (100, 400))
         # 在圖片上方顯示玩家名字
         screenRender.draw_text(screenRender.player1_name, 32, 100 + image.get_width()//2, 400 - 30, Setting.WHITE)
         # 顯示圖片3於右上角
-        image3 = pygame.image.load("assests/imgs/3.png").convert_alpha()
+        image3 = pygame.image.load("Assets/imgs/3.png").convert_alpha()
         # 設定新寬度
         new_width = 450
         # 等比例縮放
@@ -116,21 +116,21 @@ while True:
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         screen.fill(Setting.BLACK)
         # 顯示圖片5於左上角
-        image5 = pygame.image.load("assests/imgs/5.png").convert_alpha()
+        image5 = pygame.image.load("Assets/imgs/5.png").convert_alpha()
         new_width5 = 120
         scale_factor5 = new_width5 / image5.get_width()
         new_height5 = int(image5.get_height() * scale_factor5)
         image5 = pygame.transform.scale(image5, (new_width5, new_height5))
         screen.blit(image5, (450, 500))
         # 顯示圖片6於右上角
-        image6 = pygame.image.load("assests/imgs/6.png").convert_alpha()
+        image6 = pygame.image.load("Assets/imgs/6.png").convert_alpha()
         new_width6 = 120
         scale_factor6 = new_width6 / image6.get_width()
         new_height6 = int(image6.get_height() * scale_factor6)
         image6 = pygame.transform.scale(image6, (new_width6, new_height6))
         screen.blit(image6, (Setting.WIDTH - new_width6 - 450, 450))
 
-        image9 = pygame.image.load("assests/imgs/9.png").convert_alpha()
+        image9 = pygame.image.load("Assets/imgs/9.png").convert_alpha()
         # 設定新寬度
         new_width = 500
         # 等比例縮放
@@ -173,7 +173,7 @@ while True:
                 screen.blit(i, j) 
             screenRender.GameCell(player1_X, player_Y, 30, 2, 20, 10, screenRender.player1_name)
             screenRender.GameCell(player2_X, player_Y, 30, 2, 20, 10, screenRender.player2_name) 
-            img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
+            img = pygame.image.load(os.path.join("Assets/imgs", "level_1.jpg")).convert()
             #gameover_img = pygame.transform.scale(img, (200, 200))
             screen.blit(Setting.gameover_img, (250, 500))
             screenRender.draw_text("GAME OVER", 72, 250, 500, Setting.WHITE)
@@ -183,7 +183,7 @@ while True:
                 screen.blit(i, j)
             screenRender.GameCell(player1_X, player_Y, 30, 2, 20, 10, screenRender.player1_name)
             screenRender.GameCell(player2_X, player_Y, 30, 2, 20, 10, screenRender.player2_name)
-            img = pygame.image.load(os.path.join("Assests/imgs", "level_1.jpg")).convert()
+            img = pygame.image.load(os.path.join("Assets/imgs", "level_1.jpg")).convert()
             # gameover_img = pygame.transform.scale(img, (200, 200))
             screen.blit(Setting.gameover_img, (1250, 500))
             screenRender.draw_text("GAME OVER", 72, 1250, 500, Setting.WHITE)
